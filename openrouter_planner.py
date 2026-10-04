@@ -7,7 +7,7 @@ from typing import Protocol
 
 from agent_control import StopRun
 from evidence_queries import TOOLS
-from model_budget import Budget, BudgetError, money
+from model_budget import BudgetPort, BudgetError, money
 
 
 class FixtureCompletion(Protocol):
@@ -19,7 +19,7 @@ class FixtureCompletion(Protocol):
 class ProviderPlanner:
     kind = "provider_fixture"
 
-    def __init__(self, transport: FixtureCompletion, budget: Budget, *, maximum_charge_usd="0.006"):
+    def __init__(self, transport: FixtureCompletion, budget: BudgetPort, *, maximum_charge_usd="0.006"):
         if transport.kind != "local_fixture":
             raise StopRun("model_transport_disabled")
         self.transport, self.budget = transport, budget
@@ -30,10 +30,26 @@ class ProviderPlanner:
         self.steps = []
         self.closed = False
         self.bound_run = None
+        self.reconciliation_required = False
+
+    def record_unknown(self, ticket):
+        try:
+            self.budget.unknown(ticket)
+            return True
+        except BudgetError:
+            self.reconciliation_required = True
+            return False
 
     def accounting(self):
-        return {"mode": "provider_contract_simulation", "provider_attempts": self.calls,
-                "pricing": "synthetic_fixture_not_live_quote", "budget": self.budget.snapshot()}
+        try:
+            snapshot = self.budget.snapshot()
+        except BudgetError:
+            snapshot = {"state": "unavailable"}
+        value = {"mode": "provider_contract_simulation", "provider_attempts": self.calls,
+                "pricing": "synthetic_fixture_not_live_quote", "budget": snapshot}
+        if self.reconciliation_required:
+            value["reconciliation_required"] = True
+        return value
 
     async def request(self, function, parameters, context):
         if self.closed or self.calls >= 2:
@@ -60,28 +76,30 @@ class ProviderPlanner:
             response = await self.transport.complete(payload)
         except asyncio.CancelledError:
             self.closed = True
-            self.budget.unknown(ticket)
+            self.record_unknown(ticket)
             raise
         except Exception:
             self.closed = True
-            self.budget.unknown(ticket)
-            raise StopRun("model_transport_failed") from None
+            recorded = self.record_unknown(ticket)
+            raise StopRun("model_transport_failed" if recorded else "model_budget_unavailable") from None
         try:
             # Decode/size failures before a credible settlement retain the exposure.
             if not isinstance(response, dict) or len(json.dumps(response, allow_nan=False).encode()) > 64 * 1024:
                 raise ValueError()
             cost = response.get("usage", {}).get("cost")
             if type(cost) not in (int, float, Decimal):
-                self.budget.unknown(ticket)
-                raise BudgetError("model_cost_unknown")
+                recorded = self.record_unknown(ticket)
+                raise BudgetError("model_cost_unknown" if recorded else "model_budget_unavailable")
             self.budget.settle(ticket, cost)
         except BudgetError as error:
             self.closed = True
+            if str(error) == "model_budget_unavailable":
+                self.reconciliation_required = True
             raise StopRun(str(error)) from None
         except (ValueError, TypeError, AttributeError, RecursionError):
             self.closed = True
-            self.budget.unknown(ticket)
-            raise StopRun("model_cost_unknown") from None
+            recorded = self.record_unknown(ticket)
+            raise StopRun("model_cost_unknown" if recorded else "model_budget_unavailable") from None
         try:
             choices = response["choices"]
             if not isinstance(choices, list) or len(choices) != 1 or choices[0]["finish_reason"] != "tool_calls":

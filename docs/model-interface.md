@@ -30,7 +30,7 @@ The payload uses forced function selection, non-streaming requests and disabled 
 
 All demo amounts are synthetic: USD0.02 budget, USD0.006 quote per attempt, USD0.001 settlement. Two successful fixture responses yield simulated spent0.002, held0 and available0.018. No money is charged.
 
-The ledger uses Decimal and supports shared reservation accounting within one event loop; it is neither durable nor cross-worker. Quotes are supplied by trusted composition, not by model output. A future live path needs verified model/provider pricing, conservative token/fee bounds, currency mapping and provider/key limits. The provider's [usage accounting](https://openrouter.ai/docs/cookbook/administration/usage-accounting) reports cost in credits; this simulation does not prove a live USD conversion or a hard billing cap. No token-based estimate is presented as a guaranteed price.
+The default ledger uses Decimal and supports shared reservation accounting within one event loop; it is neither durable nor cross-worker. The optional [SQLite ledger](shared-budget.md) adds persistent accounting across cooperating processes on the same host. Quotes are supplied by trusted composition, not by model output. A future live path needs verified model/provider pricing, conservative token/fee bounds, currency mapping and provider/key limits. The provider's [usage accounting](https://openrouter.ai/docs/cookbook/administration/usage-accounting) reports cost in credits; this simulation does not prove a live USD conversion or a hard billing cap. No token-based estimate is presented as a guaranteed price.
 
 ## Verification boundaries
 

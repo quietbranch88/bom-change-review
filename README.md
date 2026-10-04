@@ -12,6 +12,8 @@ Starting from a [public TI replacement question](https://e2e.ti.com/support/powe
 
 The [non-paid model-interface demo](docs/model-interface.md) additionally exercises two provider-shaped responses, pre-dispatch reservations and conservative handling of unknown charges. It uses only a local fixture, not an OpenRouter API request.
 
+The optional [shared SQLite budget](docs/shared-budget.md) persists that synthetic accounting across cooperating processes on the same host. It does not add real billing, login or multi-host coordination.
+
 ## Run the full story
 
 Python 3.11+ is sufficient. No API key, Docker, or network is needed. Use a new output directory for each run.
@@ -52,8 +54,9 @@ Docker and uv are required. The harness writes synthetic data only to its newly 
 | Admission, queueing, cancellation, and deadlines | Implemented; single event loop and synthetic permission fixtures |
 | Real LLM planning and model evaluation | Pending; planner is currently scripted |
 | Pre-dispatch reservation and settlement | Implemented and tested with synthetic quotes/costs; live pricing and billing enforcement pending |
+| Persistent shared budget on one host | Implemented; real SQLite/process tests with synthetic money |
 | HTTP MCP OAuth and multi-tenant login | Not implemented |
-| Cross-worker global limits and durable queue recovery | Not implemented |
+| Global task and queue limits across workers | Not implemented; separate from same-host shared budget accounting |
 | EDA simulation, hardware tests, or replacement approval | Out of scope |
 
 Historical extraction smoke modules do not mean the current Agent is connected to a model; the public demo does not call them. Any paid path requires renewed verification of the model, provider, pricing, and authorized trial budget.

@@ -1,5 +1,6 @@
 {
   "date": "2026-10-04",
+  "runtime_checkpoint": "88d3f3c",
   "base_checkpoint": "29b750e",
   "artifact": "Non-paid provider-contract slice; final sources fingerprinted below; local verification, not deployed",
   "environment": "Windows; Python 3.13.14; MCP SDK 2.2.0; Neo4j Community 5.26.29; local synthetic data",

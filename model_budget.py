@@ -1,10 +1,18 @@
 """In-memory event-loop reservation accounting, not a provider billing limit."""
 
 from decimal import Decimal, InvalidOperation
+from typing import Protocol
 
 
 class BudgetError(Exception):
     """Fixed reason only; never contains provider data."""
+
+
+class BudgetPort(Protocol):
+    def reserve(self, maximum_charge_usd) -> int: ...
+    def unknown(self, ticket: int) -> None: ...
+    def settle(self, ticket: int, actual_charge_usd) -> None: ...
+    def snapshot(self) -> dict: ...
 
 
 def money(value):

@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-04",
+  "base_checkpoint": "88d3f3c",
+  "artifact": "Same-host shared synthetic budget; final source fingerprints; local verification, not deployed",
+  "environment": {"os": "Windows x86_64", "python": "3.13.14", "sqlite": "3.53.1"},
+  "storage": {"scope": "sqlite_same_host_shared_file", "journal_mode": "delete", "synchronous": "FULL", "foreign_keys": true, "busy_timeout_ms": 100, "write_transaction": "BEGIN IMMEDIATE", "units": "integer micro-USD synthetic amounts"},
+  "provider": "local_fixture_only; no HTTP or key reads; evidence fixture in new CLI/process tests",
+  "local_suite": {"discovered": 343, "passed": 317, "skipped_external_service": 26, "elapsed_seconds": 55.578},
+  "focused_real_sqlite_tests": {"count": 21, "all_passed": true, "elapsed_seconds": 6.410},
+  "process_evidence": {
+    "start_method": "spawn",
+    "distinct_child_pids_asserted": true,
+    "last_reservation": {"processes": 2, "admitted": 1, "refused": 1, "held": "0.006", "spent": "0"},
+    "duplicate_settlement": {"processes": 2, "same_ticket_and_cost": true, "durable_settlements": 1, "spent": "0.001"},
+    "controller_workflow": {"processes": 2, "admitted": 1, "refused_before_fixture_dispatch": 1, "final_spent": "0.002"},
+    "abrupt_exit_after_commit": {"exit_code": 7, "hold_retained": true, "later_over_capacity_reservation_refused": true},
+    "cli_restart_balance_and_unknown_block_asserted": true,
+    "power_loss_tested": false
+  },
+  "failure_evidence": {"sql_abort_rollback": true, "exclusive_lock_pre_dispatch_refusal": true, "unknown_write_failure_reconciliation_reported": true, "unpersisted_global_block_not_claimed": true, "no_auto_release_or_retry": true},
+  "guard_mutations": {"shared_budget": 3, "preceding_provider_guards": 3, "baseline_passed": true, "relevant_assertion_failures": true, "restored_passed": true, "isolated_copies_only": true},
+  "security": {"bandit": "1.9.4 runtime/script/fixture scope", "high": 0, "medium": 0, "retained_low_warnings": 5, "pip_audit": "2.10.1; 29 unchanged locked packages; no known advisory", "secret_scan": "detect-secrets 1.5.0; no network verification; reviewed candidates do not resolve unidentified GitGuardian alerts"},
+  "not_verified": ["live model or pricing", "provider billing cap", "authenticated user isolation", "multi-host coordination", "power-loss durability", "real Neo4j/MCP chain for this slice", "container or SQLite engine advisory scan"],
+  "paid_model_calls": 0,
+  "engineering_approval": false,
+  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF",
+  "runtime_sha256": {
+    "agent_control.py": "e765accf9755561e7c8beb798607c8a51356adc8f024166dc1b5e6d1e9cea11d",
+    "model_budget.py": "14b7163d32349006ea8252abcb0589e0c1927ba168401e36b15375b5710c97fa",
+    "openrouter_planner.py": "c72b21533dbb94c8ed8bd1f8543e3f849aa4eb13414eaf86bb3f876f50233828",
+    "model_demo.py": "7dec59e15c1e60c274a65ef73da523a8d96df7f26ab21ffdec2e4272caf939da",
+    "sqlite_budget.py": "4af01b50eddb17ea0fc11969fcbb46e514dccd532a50adfc6ef3ddbe0c9967b7",
+    "tests/test_sqlite_budget.py": "a6b1538cc37824c56f383ccb983bbba41625b751e075053ea01d94d46a184adc",
+    "scripts/verify_shared_budget_guards.py": "ae51ec4c5659c14492df81267797ea4c84f8fef70ebe32d166e22bbcbdd52e7d"
+  }
+}

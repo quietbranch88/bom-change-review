@@ -97,6 +97,8 @@ Arrows show entrypoint calls and adapter collaboration. Workflows depend on inte
 
 Current measurements cover demo queue/total duration, admission outcomes, peak active tasks, and separate MCP handler phases. The MCP server has one read permit per process, but its waiting callers are not bounded. The separate [model-interface fixture](model-interface.md) implements pre-dispatch reservation and settlement/unknown-exposure handling with synthetic amounts. Live quotes, real billing settlement, per-model permits, shared database capacity and real-model evaluations remain pending. Single-process limits provide no cross-worker or replica guarantees.
 
+The optional [SQLite budget adapter](shared-budget.md) adds persistent reservation accounting across processes sharing one local file on the same host. This is separate from admission/queue limits, which remain single-process. BudgetPort keeps database mechanics outside the controller; short write transactions end before provider work begins. This adapter is not a distributed budget, authentication layer or live billing cap.
+
 ## MCP delivery contract
 
 The [three tools](mcp-contracts.md) accept only an exact snapshot ID. Unknown names are rejected as protocol errors before application dispatch. Application validation precedes fixed Neo4j queries; tool-specific output schemas reject malformed nested evidence before it can be returned as success. Existing projections and unknown states remain readable, while engineering approval is always false.

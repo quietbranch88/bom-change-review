@@ -38,7 +38,8 @@ SAFE_REASONS = {"invalid_planner_response", "tool_not_allowed", "invalid_tool_ar
                 "planner_limit", "evidence_unavailable", "invalid_tool_result", "tool_transport_failed",
                 "model_budget_exhausted", "model_budget_blocked", "model_cost_unknown", "model_cost_overrun",
                 "invalid_model_quote", "model_call_limit", "invalid_model_request", "invalid_model_response",
-                "model_transport_failed", "model_transport_disabled"}
+                "model_transport_failed", "model_transport_disabled", "model_budget_unavailable",
+                "model_budget_configuration_mismatch", "model_settlement_conflict", "invalid_model_ticket"}
 
 
 async def run(question, snapshot_id, planner: Planner, tools: ReadTools, *, timeout_seconds=90):
