@@ -15,7 +15,7 @@ from test_neo4j_graph import inputs
 ENABLED = os.environ.get("BOM_NEO4J_LIVE") == "isolated-new-container"
 if ENABLED:
     import anyio
-    from mcp import Client
+    from mcp import Client, MCPError
     from jsonschema import validate
     from mcp_read_client import server_parameters
 
@@ -55,6 +55,11 @@ class LiveMCPTests(unittest.TestCase):
         self.assertFalse(data["engineering_approval"])
         self.assertEqual(result.is_error, data["status"] == "error")
         self.assertNotIn(os.environ["BOM_NEO4J_PASSWORD"], json.dumps(data))
+        timing = result.meta["bom-change-review/timing"]
+        self.assertEqual(timing["scope"], "server_handler_only")
+        for phase in ("queue_ms", "execute_ms", "validation_ms", "total_ms"):
+            self.assertGreaterEqual(timing[phase], 0)
+        self.assertAlmostEqual(timing["total_ms"], sum(timing[k] for k in ("queue_ms", "execute_ms", "validation_ms")), places=6)
         return data
 
     def test_discovery_and_all_seven_stages_preserve_source_and_state(self):
@@ -133,8 +138,11 @@ class LiveMCPTests(unittest.TestCase):
                 self.assertIsNone(result["data"])
                 self.assertNotIn("DELETE", json.dumps(result))
             for name in ("import", "initialize", "approve", "execute_cypher"):
-                value = await self.call(client, name, {"snapshot_id": self.ids["initial"]})
-                self.assertEqual(value["error"], "unknown_tool")
+                with self.assertRaises(MCPError) as raised:
+                    await client.call_tool(name, {"snapshot_id": self.ids["initial"]}, read_timeout_seconds=65)
+                self.assertEqual(raised.exception.code, -32602)
+                self.assertEqual(raised.exception.message, "unknown_tool")
+                self.assertIsNone(raised.exception.data)
             value = await self.call(client, "get_case_gaps", {"snapshot_id": "case:" + "0" * 64})
             self.assertEqual(value["status"], "not_found")
             self.assertIsNone(value["data"])
@@ -208,6 +216,7 @@ class LiveMCPTests(unittest.TestCase):
         self.assertEqual(process.returncode, 0, "client CLI failed (raw output omitted)")
         result = json.loads(process.stdout)
         self.assertFalse(result["is_error"])
+        self.assertEqual(result["diagnostics"]["bom-change-review/timing"]["scope"], "server_handler_only")
         self.assertEqual(result["result"]["data"]["decision"]["assessment"]["status"], "violates_requirement")
         self.assertEqual(result["result"]["data"]["decision"]["selected_specification"]["fact_id"], "F-BIAS-TIED")
         self.assertEqual(self.durable_state(), before)

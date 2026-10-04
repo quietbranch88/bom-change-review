@@ -26,7 +26,8 @@ async def query(snapshot_id, tool):
         async with Client(server_parameters()) as client:
             result = await client.call_tool(tool, {"snapshot_id": snapshot_id}, read_timeout_seconds=65)
             return {"protocol_version": client.protocol_version, "is_error": result.is_error,
-                    "result": result.structured_content}
+                    "result": result.structured_content,
+                    "diagnostics": {"bom-change-review/timing": (result.meta or {}).get("bom-change-review/timing")}}
 
 
 def main():
