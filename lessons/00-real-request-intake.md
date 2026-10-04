@@ -1,39 +1,39 @@
-# 從真實提問建立需求：TI-1222180
+# Build requirements from a real question: TI-1222180
 
-這一課是可人工核對的資料範例，不是已完成的自動擷取器。AI 協助讀取來源與整理參考草稿，尚無領域工程師覆核，也沒有獨立模型品質評測。
+This is a manually checkable example, not a completed automatic extractor. AI helped read the source and organize a reference draft. Domain-engineer review and independent model-quality evaluation remain pending.
 
-## 先讀，再抽取
+## Read before extracting
 
-1. 打開 [原始問題節錄](../examples/ti-1222180/source.md)，先不要看論壇回覆。
-2. 判斷被替換的料號、工程要求與未知條件。
-3. 對照 [結構化參考草稿](../examples/ti-1222180/request.reference-draft.json)。每個已擷取的要求都指回 Q1–Q6；未知欄位沒有捏造原文證據。
+1. Read the [question excerpt](../examples/ti-1222180/source.md) without consulting the forum reply.
+2. Identify the original part, requirements, and unknown conditions.
+3. Compare with the [reference draft](../examples/ti-1222180/request.reference-draft.json). Extracted requirements point to Q1–Q6; unknown fields have no fabricated evidence.
 
-## 這個案例會抓到哪些錯誤？
-
-| 情況 | 正確處理 | 錯誤處理 |
+| Situation | Correct handling | Incorrect handling |
 |---|---|---|
-| 網頁產品標籤是 LM5155 | 依提問正文識別原料 LT8301ESS | 把標籤當原料 |
-| 正文明列輸入範圍 | 保存 14–30 V 的上下界與單位 | 只留下上限 30 V |
-| 明列 AEC-Q100 | 保存為需求，等精確候選料號資料驗證 | 認為原廠推薦就代表已滿足資格 |
-| 回覆提出候選 | 與提問分開保存 | 倒填成工程師一開始提出的候選 |
-| 沒有寫不能改 PCB | 未知 | 預設禁止改板 |
-| 1.5 A 未說峰值或連續 | 保留數值與未明確的限定條件 | 直接標成最大連續負載 |
+| Page metadata names LM5155 | Identify LT8301ESS from the question | Treat the product tag as the original part |
+| The question gives an input range | Preserve both bounds and unit: 14–30 V | Keep only 30 V |
+| AEC-Q100 is requested | Store a requirement to verify for the exact candidate | Assume a vendor recommendation proves qualification |
+| A reply suggests a candidate | Keep reply and question separate | Backfill it as the requester's candidate |
+| PCB changes are not discussed | Mark the permission unknown | Assume PCB changes are forbidden |
+| 1.5 A is not identified as peak or continuous | Preserve the value and missing qualifier | Label it maximum continuous load |
 
-電流、功率與輸出的關聯來自上下文解讀，因此草稿另標示待人工覆核。數值相乘吻合只代表一致性，不能證明候選元件符合要求。
+Associating current and power with the output requires contextual interpretation, so it remains pending review. Consistent arithmetic does not prove candidate suitability.
 
-## 為什麼這樣存？
+## Why store it this way?
 
-- 原文節錄與正規化數值分開：需要時能重新檢查擷取結果。
-- 要求與元件事實分開：輸入 14–30 V 是客戶需求，不是 LT8301ESS 或候選元件的資料表規格。
-- 工程問題與論壇回覆分開：模型練習需求擷取時不能偷看回覆補入答案。
-- 缺漏與否定分開：沒有提到隔離、溫度或改板限制，不代表不需要。
+- Separate excerpts from normalized values so extraction can be checked again.
+- Separate requirements from component facts. Requested 14–30 V is not a datasheet specification.
+- Separate questions from replies to prevent answer leakage.
+- Separate missing information from negative requirements. Silence about isolation, temperature, or PCB changes does not mean they are unnecessary.
 
-## 下一步的驗收，不是本輪已完成的功能
+## Acceptance for a future extractor
 
-給擷取器 question body，不提供本參考 JSON。檢查原料、數值、單位、證據位置及未知條件；不能把所有值都設成未知，也不能加入回覆中的候選。這一例只是開發樣本，不能拿來宣稱對新資料的準確率。
+Supply only the question body, not the reference JSON. Check exact part identity, values, units, evidence locations, and unknowns. Returning everything as unknown is not acceptable; borrowing candidates from replies is also not acceptable. This development example cannot establish accuracy on new data.
 
-後續再用原廠資料表檢查候選，新增依據與未滿足的要求。此時不建立無條件的「可直接替換」關係，也不需要 Neo4j 才能完成第一步。
+Later, check candidate facts against manufacturer documents. Do not create an unconditional replacement relationship. Neo4j is not required for this first step.
 
-## 本輪證據與限制（2026-09-25）
+## Historical evidence and limits: 2026-09-25
 
-來源：TI 官方論壇公開提問與回覆；完整頁面已在本輪讀取，專案只保留短節錄與改寫。AI 逐項核對六個來源位置，人類覆核仍待完成。PowerShell 本機檢查成功（exit 0）：JSON 可解析、五項內容斷言、四個檔案存在及無行尾空白、Markdown 本機連結均可解析。另執行 git diff --check（exit 0）；因檔案尚未追蹤，實際新檔檢查以先前的直接檔案檢查為準。分支 codex/lesson-01，尚無 commit。未執行獨立 LLM 擷取、資料庫、RAG、MCP、EDA 或硬體測試。沒有公開到 GitHub。
+The public TI forum page was read in that session; only short excerpts and paraphrases are retained. AI checked six source locations; human review remained pending. Local PowerShell checks exited 0: JSON parsing, five content assertions, four files present with no trailing whitespace, and resolvable local Markdown links. `git diff --check` exited 0; direct file checks supplied evidence for then-untracked files.
+
+At that checkpoint, `codex/lesson-01` had no commit and had not been published. No independent LLM extraction, database, RAG, MCP, EDA, or hardware test ran. These are historical observations, not the current publication state.
