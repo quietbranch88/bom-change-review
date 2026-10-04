@@ -79,6 +79,8 @@ Demo limits are two active tasks, four waiting, and one outstanding task per syn
 
 ## Modules and dependencies
 
+The separate [local authentication entrypoint](local-auth.md) verifies synthetic credentials in SQLite, derives a principal from the persisted session, and checks an explicit grant and case tenant before admission. It rechecks authorization before and after each evidence tool and before returning an answer. AuthenticatedReview depends on the Authorization port; SQLiteAuth owns session/password mechanics. The automated auth demo uses fixture evidence and a non-paid provider-shaped planner with the shared synthetic budget. It does not add authentication to the stdio MCP server or create a network service.
+
 ```mermaid
 flowchart LR
     CLI[system_demo and agent_demo entrypoints] --> WF[projection_sync workflow]

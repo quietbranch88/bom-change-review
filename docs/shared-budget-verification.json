@@ -1,6 +1,7 @@
 {
   "date": "2026-10-04",
   "base_checkpoint": "88d3f3c",
+  "historical_checkpoint": "014c339",
   "artifact": "Same-host shared synthetic budget; final source fingerprints; local verification, not deployed",
   "environment": {"os": "Windows x86_64", "python": "3.13.14", "sqlite": "3.53.1"},
   "storage": {"scope": "sqlite_same_host_shared_file", "journal_mode": "delete", "synchronous": "FULL", "foreign_keys": true, "busy_timeout_ms": 100, "write_transaction": "BEGIN IMMEDIATE", "units": "integer micro-USD synthetic amounts"},
