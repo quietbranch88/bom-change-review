@@ -24,7 +24,7 @@ flowchart LR
 
 Keeping specifications, conditions, and document versions separate lets us ask: which specification was selected, why was it applicable, and which assessments could a source update affect? Cases and assessments bind to source fingerprints; old versions are not overwritten. A gap is a reason, next action, and completion criterion, not an empty cell.
 
-Versioned deterministic rules perform numerical comparisons. MCP supplies read-only evidence. A future model may plan retrieval and explain results, but cannot replace engineering review or grant replacement approval. A synthetic receipt does not turn a pending source draft into an engineering-certified datasheet.
+Versioned deterministic rules perform numerical comparisons. MCP supplies read-only evidence. The optional model planner chooses evidence tools and fetched bundles; the server binds exact references and the controller independently checks completeness. It cannot replace engineering review or grant replacement approval. A synthetic receipt does not turn a pending source draft into an engineering-certified datasheet.
 
 ## Review versions and sync recovery
 
@@ -97,7 +97,7 @@ Arrows show entrypoint calls and adapter collaboration. Workflows depend on inte
 
 ## Remaining latency and cost controls
 
-Current measurements cover demo queue/total duration, admission outcomes, peak active tasks, and separate MCP handler phases. The MCP server has one read permit per process, but its waiting callers are not bounded. The separate [model-interface fixture](model-interface.md) implements pre-dispatch reservation and settlement/unknown-exposure handling with synthetic amounts. Live quotes, real billing settlement, per-model permits, shared database capacity and real-model evaluations remain pending. Single-process limits provide no cross-worker or replica guarantees.
+Current measurements cover demo queue/total duration, admission outcomes, peak active tasks, and separate MCP handler phases. The MCP server has one read permit per process, but its waiting callers are not bounded. The separate [model-interface fixture](model-interface.md) implements pre-dispatch reservation and settlement/unknown-exposure handling with synthetic amounts. A later authorized trial additionally recorded current endpoint quotes and provider-reported costs; invoice reconciliation, per-model permits, shared database capacity and model-quality evaluations remain pending. Single-process limits provide no cross-worker or replica guarantees.
 
 The optional [SQLite budget adapter](shared-budget.md) adds persistent reservation accounting across processes sharing one local file on the same host. This is separate from admission/queue limits, which remain single-process. BudgetPort keeps database mechanics outside the controller; short write transactions end before provider work begins. This adapter is not a distributed budget, authentication layer or live billing cap.
 
@@ -107,6 +107,10 @@ The [three tools](mcp-contracts.md) accept only an exact snapshot ID. Unknown na
 
 Handler metadata separates queue, execution and validation time from evidence. Execution includes worker dispatch and DB waits, not only query execution. It excludes SDK framing, transport and model latency. No end-to-end latency or global capacity guarantee follows from these measurements. A read-only annotation describes intent; fixed queries are an application guard, not a database-role or authentication guarantee.
 
-The two-response provider adapter is implemented only with a non-paid fixture transport. A real-model planner is not connected. After a timeout, remote work and charges may remain unknown; local cancellation does not prove zero cost. A case ID is not access authorization, and a synthetic policy test is not production authentication.
+The original two-response provider adapter defaults to a non-paid fixture transport. A later optional [authenticated bounded Agent](bounded-live-agent.md) adds an explicitly enabled HTTP adapter and portal action. The [later in-app-browser trial](browser-live-verification.json) completed two real model requests and MCP evidence reads, but supplied only two of four mandatory references. The controller rejected the incomplete result. A valid live answer and Chrome acceptance are still missing; in-app-browser evidence does not waive the Chrome gate. The earlier key401 remains a historical checkpoint. After a timeout, remote work and charges may remain unknown; local cancellation does not prove zero cost. A case ID is not access authorization, and a synthetic policy test is not production authentication.
+
+The optional [SSO and protected HTTP MCP slice](sso-mcp-oauth.md) adds a separate network entrypoint: browser → portal BFF → fixed Keycloak issuer → resource-bound MCP token → server-owned issuer/subject case grants → fixed Neo4j reads. Tokens remain server-side. Its default launch is non-paid; the separate explicitly enabled Agent extension supplies live model transport. Neither slice changes trusted-local stdio or establishes corporate federation, multi-host session state or production HTTPS readiness. Verification must not be inferred from older stdio or local-login receipts.
+
+The current finish wire selects already-fetched bundle tool names rather than reproducing source identifiers. The planner binds exact references, while the unchanged controller enforces reference completeness and consistency. Missing mandatory selections still stop; this is not a citation auto-repair. [Current fixture/real-evidence verification](evidence-bundle-verification.json) does not establish new paid-model success or browser acceptance.
 
 References: [MCP tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools), [MCP authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization), [OpenRouter tool calling](https://openrouter.ai/docs/guides/features/tool-calling).

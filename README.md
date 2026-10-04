@@ -16,6 +16,8 @@ The optional [shared SQLite budget](docs/shared-budget.md) persists that synthet
 
 The separate [local login demo](docs/local-auth.md) adds password verification, SQLite sessions and case/tenant authorization for synthetic accounts. It is not remote MCP OAuth or enterprise SSO.
 
+The optional [local SSO and HTTP MCP demo](docs/sso-mcp-oauth.md) adds an external Keycloak IdP, separate portal/MCP clients, resource-bound access tokens and server-side case grants. Its real-service and browser verification status is recorded separately; loopback HTTP and experimental resource indicators are not production readiness.
+
 ## Run the full story
 
 Python 3.11+ is sufficient. No API key, Docker, or network is needed. Use a new output directory for each run.
@@ -54,15 +56,19 @@ Docker and uv are required. The harness writes synthetic data only to its newly 
 | Three read-only MCP tools | Implemented; official SDK 2.2.0, local stdio |
 | Durable sync jobs and explicit retry | Implemented; SQLite plus Neo4j adapter |
 | Admission, queueing, cancellation, and deadlines | Implemented; single event loop and synthetic permission fixtures |
-| Real LLM planning and model evaluation | Pending; planner is currently scripted |
-| Pre-dispatch reservation and settlement | Implemented and tested with synthetic quotes/costs; live pricing and billing enforcement pending |
+| Bounded OpenRouter planner adapter | Fetched-bundle reference binding verified with fixture model and real SSO/MCP/Neo4j; successful live answer and Chrome acceptance pending |
+| Pre-dispatch reservation and settlement | Real trial persisted two admissions and reported rounded cost; local ledger is not provider invoice enforcement |
 | Persistent shared budget on one host | Implemented; real SQLite/process tests with synthetic money |
 | Local CLI login and case authorization | Implemented for synthetic accounts; real SQLite session and authorization tests |
-| HTTP MCP OAuth and multi-tenant login | Not implemented |
+| Local Keycloak SSO and HTTP MCP OAuth | Real HTTP checks passed for both users; in-app-browser login, case isolation and logout checked; Chrome acceptance pending; not corporate federation |
 | Global task and queue limits across workers | Not implemented; separate from same-host shared budget accounting |
 | EDA simulation, hardware tests, or replacement approval | Out of scope |
 
-Historical extraction smoke modules do not mean the current Agent is connected to a model; the public demo does not call them. Any paid path requires renewed verification of the model, provider, pricing, and authorized trial budget.
+Historical extraction smoke modules are separate from the optional authenticated Agent and do not prove its behavior; the default public demo does not call them. Any paid path requires renewed verification of the model, provider, pricing, and authorized trial budget.
+
+The optional [authenticated bounded Agent](docs/bounded-live-agent.md) adds a fixture-mode portal action and explicitly enabled live transport. A later authorized in-app-browser trial made two real model requests and two MCP evidence reads. The model supplied only two of four mandatory references, so no answer was released. The reported rounded cost was US$0.000184. A further portal action and a separate process were refused without another inference request. See the [browser trial and final authentication receipt](docs/browser-live-verification.json); the [earlier application trial](docs/live-model-trial-verification.json) remains a historical checkpoint. Successful live-answer and Chrome acceptance remain incomplete. Default demos stay non-paid.
+
+The current planner asks the model to select already-fetched evidence bundles, not reproduce citation identifiers. The server binds exact references from those bundles; the controller still rejects missing, invented or inconsistent evidence. The [reference-binding verification](docs/evidence-bundle-verification.json) covers deterministic tests and real SSO/MCP/Neo4j with a fixture model. This repair has not had a new paid-provider trial.
 
 ## Tests and guard checks
 

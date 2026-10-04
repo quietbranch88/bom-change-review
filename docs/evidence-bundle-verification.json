@@ -1,0 +1,72 @@
+{
+  "schema_version": "evidence-bundle-binding-v1",
+  "observed_at_utc": "2026-10-04T23:33:49Z",
+  "release_state": "verified_working_tree_checkpoint_not_main_merge_or_deployment",
+  "base_commit": "1f2910f",
+  "contract": {
+    "finish_arguments": "evidence_tools",
+    "required_bundles": ["get_assessment_evidence", "get_case_gaps"],
+    "reference_owner": "host_binds_exact_references_from_selected_fetched_typed_evidence",
+    "selection_errors": "stop_without_answer_no_auto_repair",
+    "final_answer_citations_compatible": true,
+    "independent_controller_guards_preserved": true,
+    "engineering_approval": false
+  },
+  "tests": {
+    "command": "python -m unittest discover -s tests -v",
+    "discovered": 412,
+    "passed": 386,
+    "skipped_opt_in": 26,
+    "duration_seconds": 181.307,
+    "old_contract_red_baseline": "three_new_tests_failed_on_relevant_assertions",
+    "bundle_tests": 4,
+    "citation_mutations": ["mandatory_context", "missing_count", "exact_bundle_binding"],
+    "live_guard_mutations": ["trial_attempts", "case_permission", "before_model_revocation"],
+    "mutation_result": "each_baseline_pass_relevant_assertion_failure_restored_pass"
+  },
+  "integration": {
+    "command": "python scripts/verify_sso_live.py --isolated-output output/OWNED_RUN --agent-fixture",
+    "result": "passed",
+    "real_boundaries": ["Keycloak", "BFF", "official_OAuth_HTTP_MCP", "isolated_Neo4j"],
+    "assertions": ["both_users_own_case_expected_result", "cross_case_denial", "ID_token_denial", "logout_retained_token_denial", "complete_graph_unchanged"],
+    "model_boundary": "fixture",
+    "cookie_boundary": "HTTP_client_substitutes_localhost_Secure_cookie_policy",
+    "portal_agent_route": "not_exercised",
+    "Chrome": "not_exercised",
+    "paid_model_calls": 0,
+    "paid_ledgers_reset": false
+  },
+  "environment": {
+    "python": "3.13.14",
+    "mcp_sdk": "2.2.0",
+    "keycloak": "26.8.0",
+    "neo4j": "5.26.29_Community",
+    "sqlite": "3.53.1",
+    "scope": "local_synthetic_accounts_and_cases"
+  },
+  "targeted_scans": {
+    "bandit_version": "1.9.4",
+    "runtime_and_script_files": 15,
+    "high": 0,
+    "medium": 0,
+    "low": 52,
+    "low_review": "42_verification_assertions_9_fixed_argv_subprocess_prompts_1_OAuth_protocol_constant",
+    "pip_audit_version": "2.10.1",
+    "unchanged_locked_packages": 29,
+    "dependency_result": "no_known_advisory_returned_not_image_audit"
+  },
+  "remaining_gates": ["successful_post_repair_real_model_answer", "Chrome_interaction_acceptance", "unlocated_historical_GitGuardian_incidents", "main_merge", "deployment"],
+  "source_sha256": {
+    "openrouter_planner.py": "5895a6320bdff155d233695fb941239687322b1445e1ba301e4ca2512b743395",
+    "agent_control.py": "4047bb3863c0806beefaac9531ed04aa2dc17b7153c0805e1df87315578d5f75",
+    "examples/agent_control/provider_fixture.py": "67e4eccd358d520394aa670e36fe5e1f05ebb399457496e47692fd5269a998bc",
+    "live_model.py": "61223ae06dd00ba22c1991bf21929d67073320b28b17d9693bc768d8548b85b7",
+    "sso_agent.py": "eee29868db61debdf7df0e97786fffd783c45ef8be413cfecbef65807ec067a9",
+    "sso_portal.py": "525999d853e239baa731ec68e0f8e356e53259674a14f0c83bf977f0311239c6",
+    "oauth_mcp.py": "3ab2f0322f414234c3db1af9f1c95a7fd709641308f55cb8f2ddfd1ef9b564c0",
+    "oauth_provider.py": "c0987e2df9eb8c96f21b09aed70dd4576865725dd1e3403c7f233a7eb428325e",
+    "tests/test_evidence_bundle_finish.py": "9ef07162681b814f6eff7d28eb7fbe505ba8824a5d0e48bfd027cc8e662e54fa",
+    "tests/test_citation_contract.py": "b4cd29f640b564e7862f3d277d46fcf0ae710321f2e4cb6b3e889bb07ea2e7f5",
+    "scripts/check_citation_guards.py": "8c534c91ec56ddbf85afd7a3344e640f6715d04611f263a4c04b40351e10296a"
+  }
+}

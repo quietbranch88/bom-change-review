@@ -1,0 +1,81 @@
+{
+  "schema_version": "browser-live-verification-v1",
+  "date_local": "2026-10-05",
+  "timezone": "Asia/Taipei",
+  "base_commit": "1f2910f",
+  "release_state": "local_uncommitted_unpublished",
+  "synthetic_only": true,
+  "paid_trial": {
+    "started_at_utc": "2026-10-04T22:57:33.541Z",
+    "observed_at_utc": "2026-10-04T22:58:21.248Z",
+    "browser": "Codex in-app browser",
+    "entrypoint": "http://localhost:18882/review/A",
+    "mocked_apis": false,
+    "real_chain": "Browser -> portal session -> OpenRouter -> official OAuth HTTP MCP -> isolated Neo4j -> browser result",
+    "model": "mistralai/ministral-3b-2512",
+    "provider": "mistral/zdr",
+    "local_budget_usd": "0.02",
+    "maximum_model_requests": 2,
+    "provider_attempts": 2,
+    "durable_admissions": 2,
+    "automatic_retry": false,
+    "status": "stopped",
+    "reason": "invalid_citations",
+    "final_answer_released": false,
+    "engineering_approval": false,
+    "tools": ["get_case_gaps", "get_assessment_evidence"],
+    "citation_validation": {
+      "shape_valid": true,
+      "provided_count": 2,
+      "required_count": 4,
+      "allowed_count": 4,
+      "missing_required_count": 2,
+      "unknown_count": 0,
+      "duplicate_count": 0
+    },
+    "reported_cost_usd_rounded_up_to_micro_usd": "0.000184",
+    "held_usd": "0",
+    "overrun_observed": false,
+    "provider_invoice_reconciled": false,
+    "whole_graph_unchanged": true,
+    "source_unchanged_during_trial": true,
+    "source_sha256": {
+      "agent_control.py": "4047bb3863c0806beefaac9531ed04aa2dc17b7153c0805e1df87315578d5f75",
+      "openrouter_planner.py": "24c8772b8aaebc1b5c9c5becfaf4c81e16d3e25a42bd006d047a076cfd4d56a2",
+      "live_model.py": "61223ae06dd00ba22c1991bf21929d67073320b28b17d9693bc768d8548b85b7",
+      "sso_agent.py": "eee29868db61debdf7df0e97786fffd783c45ef8be413cfecbef65807ec067a9",
+      "sso_portal.py": "4233c5de825571fcfdaf2a5024c4e95389ce8b226dcc79b24ece6420e9501f36",
+      "oauth_provider.py": "cfb59f19d1b96a5c8fa2edaa40a297b4b425630c90b0b563b00c81fbfe963cb4"
+    }
+  },
+  "budget_refusal": {
+    "portal_reason": "model_call_limit",
+    "additional_provider_attempts": 0,
+    "additional_tool_calls": 0,
+    "separate_process_refused": true,
+    "ledger_unchanged": true,
+    "old_and_new_trial_ledgers_retained": true
+  },
+  "final_authentication_checkpoint": {
+    "observed_at_utc": "2026-10-04T23:08:25.940539+00:00",
+    "real_http_harness": "passed_for_both_synthetic_users",
+    "http_client_substitution": "localhost Secure-cookie policy in HTTP harness only; in-app-browser checks use actual cookies",
+    "checks": ["unauthenticated MCP401", "resource discovery", "two-client SSO", "own-case expected evidence", "other-case no-disclosure denial", "ID-token rejection", "retained access-token401 after logout", "new login requires password", "whole graph unchanged"],
+    "additional_paid_requests": 0,
+    "source_sha256": {
+      "sso_portal.py": "525999d853e239baa731ec68e0f8e356e53259674a14f0c83bf977f0311239c6",
+      "scripts/verify_sso_live.py": "fab513b86780ca8e1edd8a585c619b9fcf907df64c0db2c4541368ca35ccfe85",
+      "oauth_provider.py": "cfb59f19d1b96a5c8fa2edaa40a297b4b425630c90b0b563b00c81fbfe963cb4"
+    }
+  },
+  "browser_ui_checkpoint": {
+    "observed_at_utc": "2026-10-04T23:09:37.342Z",
+    "browser": "Codex in-app browser",
+    "mocked_apis": false,
+    "logout": "same-origin handoff followed by fixed IdP link returned Signed out; next login required password",
+    "chrome": "incomplete; debugger unattached and bounded tab-operation timeouts",
+    "paid_trial_precedes_logout_handoff_patch": true,
+    "successful_live_answer": false
+  },
+  "excluded_claims": ["production readiness", "corporate federation", "multi-host admission", "stable model quality", "provider invoice cap", "hardware approval", "publication or deployment"]
+}

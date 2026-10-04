@@ -46,6 +46,7 @@ async def run(question, snapshot_id, planner: Planner, tools: ReadTools, *, time
     counts = {"planner_calls": 0, "tool_calls": 0}
     trace = []
     seen = {}
+    citation_validation = None
 
     def result(status, reason=None, answer=None):
         value = {"mode": "scripted_planner_simulation", "status": status, "reason": reason,
@@ -53,9 +54,14 @@ async def run(question, snapshot_id, planner: Planner, tools: ReadTools, *, time
                 "paid_model_calls": 0, "engineering_approval": False}
         if planner.kind == "provider_fixture":
             value.update(mode="provider_contract_simulation", model_usage=planner.accounting())
+        elif planner.kind == "provider_live":
+            value.update(mode="bounded_live_model", model_usage=planner.accounting(),
+                         paid_model_calls=planner.calls)
+        if citation_validation is not None:
+            value["citation_validation"] = citation_validation
         return value
 
-    if (planner.kind not in {"scripted", "provider_fixture"} or not isinstance(question, str) or not question.strip()
+    if (planner.kind not in {"scripted", "provider_fixture", "provider_live"} or not isinstance(question, str) or not question.strip()
             or len(question) > 4000 or not isinstance(snapshot_id, str)
             or re.fullmatch(ID_PATTERN, snapshot_id) is None):
         return result("stopped", "invalid_run_input_or_mode")
@@ -103,6 +109,16 @@ async def run(question, snapshot_id, planner: Planner, tools: ReadTools, *, time
                             or any(not isinstance(ref, str) for ref in refs)
                             or len(refs) != len(set(refs)) or not set(refs).issubset(allowed)
                             or not required.issubset(refs)):
+                        # Counts only: never disclose untrusted references or repair them.
+                        shape = (isinstance(refs, list) and 0 < len(refs) <= 64
+                                 and all(isinstance(ref, str) for ref in refs))
+                        citation_validation = {
+                            "shape_valid": shape,
+                            "provided_count": len(refs) if isinstance(refs, list) and len(refs) <= 64 else None,
+                            "required_count": len(required), "allowed_count": len(allowed),
+                            "missing_required_count": len(required - set(refs)) if shape else None,
+                            "unknown_count": len(set(refs) - allowed) if shape else None,
+                            "duplicate_count": len(refs) - len(set(refs)) if shape else None}
                         raise StopRun("invalid_citations")
                     answer = {"snapshot_id": snapshot_id, "origin": decision.origin,
                               "result": decision.assessment_status,

@@ -1,0 +1,52 @@
+{
+  "schema_version": "sso-oauth-verification-v1",
+  "date": "2026-10-04",
+  "base_commit": "1f2910f",
+  "code_state": "uncommitted_feature_tree_identified_by_sha256",
+  "environment": {"os": "Windows", "python": "3.13.14", "mcp_sdk": "2.2.0", "keycloak": "26.8.0", "neo4j": "5.26.29"},
+  "full_suite": {"discovered": 387, "passed": 361, "skipped": 26, "seconds": 166.890},
+  "focused_suite": {"passed": 17, "seconds": 4.688},
+  "isolated_mutations": {"detected": 5, "baseline_and_restoration_passed": true},
+  "logout_regression": "independent_oidc_test_failed_before_fix_passed_after",
+  "real_chain": {
+    "result": "passed",
+    "observed_at_utc": "2026-10-04T09:40:27.2366871Z",
+    "boundary": "keycloak_bff_official_http_mcp_neo4j",
+    "substituted_boundary": "http_test_client_secure_cookie_localhost_policy",
+    "assertions": ["unauthenticated_401_and_resource_discovery", "two_clients_share_sso", "both_users_own_case_results", "cross_case_denied_without_evidence", "id_token_denied", "retained_access_token_401_after_logout", "password_required_again", "complete_graph_properties_unchanged", "engineering_approval_false"]
+  },
+  "browser_acceptance": "pending_human_login_not_proved_by_http_harness",
+  "subsequent_environment": {"observed_at_utc": "2026-10-04T09:52:14.133239Z", "docker_management": "unable_to_start", "idp_and_neo4j_http": "unavailable", "owned_python_workers": "stopped_and_absence_verified", "container_state": "unknown_engine_unavailable", "chrome_acceptance": "blocked", "deletion": "none"},
+  "later_recovery": {
+    "http_receipt_completed_at_utc": "2026-10-04T13:24:02.8349020Z",
+    "health_observed_at_utc": "2026-10-04T13:27:02.2592175Z",
+    "docker_engine": "29.6.1",
+    "old_exact_named_containers": "absent_cause_unknown",
+    "recovery": "new_isolated_synthetic_rebuild_not_old_database_restoration",
+    "account_file_byte_identical": true,
+    "readiness_seconds": 278.740,
+    "readiness_limit_seconds": 900,
+    "real_http_chain": "passed_same_harness_both_users",
+    "substituted_boundary": "http_test_client_secure_cookie_localhost_policy",
+    "owned_containers": "running_at_health_observation",
+    "four_loopback_http_probes": "200_at_health_observation_not_authentication_proof",
+    "browser_acceptance": "unverified_browser_automation_unavailable",
+    "runtime_source_hash_mismatches": 0,
+    "paid_model_calls": 0
+  },
+  "startup": {"cold_readiness": "exceeded_900_second_limit", "one_owned_warm_restart_readiness_seconds": 341.117, "fresh_start_reliability": "unverified"},
+  "security_scans": {"bandit_version": "1.9.4", "runtime_script_fixture_files": 47, "loc": 5388, "high": 0, "medium": 0, "reviewed_low": 37, "pip_audit_version": "2.10.1", "unchanged_locked_packages": 29, "known_package_advisories_returned": 0, "image_advisories": "unverified", "historical_gitguardian_incidents": "unresolved_without_exact_paths"},
+  "paid_model_calls": 0,
+  "synthetic_only": true,
+  "publication": "local_only_no_push_merge_or_deployment",
+  "source_sha256": {
+    "evidence_mcp.py": "9e36ffb650a16e5747fb199c34381aeb164af575b6a85c04181f5ddd6370e071",
+    "oauth_provider.py": "cfb59f19d1b96a5c8fa2edaa40a297b4b425630c90b0b563b00c81fbfe963cb4",
+    "oauth_mcp.py": "3ab2f0322f414234c3db1af9f1c95a7fd709641308f55cb8f2ddfd1ef9b564c0",
+    "sso_portal.py": "a486d62a7f091473f75a539b288204b091aced5bb0c537aa084203bf1caddc1d",
+    "scripts/start_sso_demo.py": "866c4e52b10494c867bb026503c63f83c8bfcd6adfc0b20adac1f101497b8349",
+    "scripts/verify_sso_live.py": "2c0d5ae031cd24ed60eacbe7085d85d9f3bbe5b2a4349ae5b151003e9f498514",
+    "scripts/check_sso_guards.py": "e286696fca2984818cfd336872706bf1bd3f7bfeca3e63d5fa3d575013601ded",
+    "tests/test_sso_oauth.py": "5b79fb2ef1bada2eaa4b01b392602f8eee1e127d129742a2893d0a680dca1e9f"
+  }
+}

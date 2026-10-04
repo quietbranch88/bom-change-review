@@ -22,7 +22,7 @@ MAX_RESULT_BYTES = 256 * 1024
 TIMING_KEY = "bom-change-review/timing"
 
 
-def create_server(queries):
+def create_server(queries, *, authorize=None):
     limiter = anyio.CapacityLimiter(1)
     validators = {name: Draft202012Validator(schema) for name, schema in OUTPUT_SCHEMAS.items()}
     async def list_tools(ctx, params):
@@ -40,10 +40,15 @@ def create_server(queries):
         # client owns the overall deadline. No exception/input text enters results.
         async with limiter:
             acquired = perf_counter()
+            if authorize is not None:
+                await authorize(params.arguments)
             try:
                 result = await anyio.to_thread.run_sync(queries.execute, params.name, params.arguments)
             except Exception:
                 result = envelope("error", error="internal_error")
+            if authorize is not None:
+                # Suppress results when permission/session ended during the read.
+                await authorize(params.arguments)
         executed = perf_counter()
         try:
             encoded = json.dumps(result, ensure_ascii=False, allow_nan=False)

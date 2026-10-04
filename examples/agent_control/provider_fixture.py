@@ -20,9 +20,9 @@ class FixtureProvider:
             if self.scenario == "invalid_tool": arguments["tool_names"][0] = "approve"
         else:
             evidence = json.loads(request["messages"][-1]["content"])["evidence"]
-            refs = list(dict.fromkeys(ref for item in evidence for ref in item["citations"]))
-            if self.scenario == "fake_citation": refs.append("document:invented")
-            arguments = {"citations": refs}
+            names = [item["tool"] for item in evidence]
+            if self.scenario == "fake_citation": names.append("document:invented")
+            arguments = {"evidence_tools": names}
         response = {"choices": [{"finish_reason": "tool_calls", "message": {"role": "assistant", "content": None,
             "tool_calls": [{"id": "fixture-call", "type": "function", "function": {
                 "name": function, "arguments": json.dumps(arguments)}}]}}], "usage": {"cost": 0.001}}

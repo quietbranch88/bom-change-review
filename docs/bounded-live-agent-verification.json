@@ -1,0 +1,79 @@
+{
+  "schema_version": "bounded-agent-verification-v1",
+  "date": "2026-10-04",
+  "base_commit": "1f2910f",
+  "code_state": "uncommitted_feature_tree",
+  "environment": {
+    "python": "3.13.14",
+    "mcp_sdk": "2.2.0",
+    "keycloak": "26.8.0",
+    "neo4j": "5.26.29"
+  },
+  "full_suite": {
+    "discovered": 399,
+    "passed": 373,
+    "skipped": 26,
+    "seconds": 131.683
+  },
+  "focused_suite": {
+    "passed": 12,
+    "seconds": 0.241
+  },
+  "subsequent_startup_receipt_metadata_correction": "source_review_and_17_sso_tests_passed_not_new_fresh_launch",
+  "isolated_mutations": {
+    "detected_by_assertion": 3,
+    "baseline_and_restoration_passed": true
+  },
+  "http_chain": {
+    "result": "passed",
+    "receipt_completed_at_utc": "2026-10-04T14:20:47.5709443Z",
+    "boundary": "real_keycloak_portal_agent_http_mcp_neo4j",
+    "model": "local_fixture",
+    "substitution": "http_test_client_secure_cookie_localhost_policy",
+    "assertions": [
+      "allowed_A_review",
+      "cross_case_no_disclosure",
+      "shared_trial_B_stops_no_dispatch",
+      "both_users_direct_workflow_fixture_trials",
+      "logout_replay_denied",
+      "full_graph_unchanged"
+    ]
+  },
+  "live_provider": {
+    "model": "mistralai/ministral-3b-2512",
+    "provider": "mistral/zdr",
+    "adapter": "implemented_explicit_enablement",
+    "preflight": "blocked",
+    "stage": "key_read",
+    "http_status": 401,
+    "inference": "not_attempted",
+    "paid_trial_authorization": "pending"
+  },
+  "browser_acceptance": "incomplete_prior_computer_use_url_policy_stop",
+  "startup_reproducibility": "new_agent_flag_fresh_container_launch_unverified",
+  "security_scans": {
+    "bandit_version": "1.9.4",
+    "scope": "nine_runtime_scripts",
+    "dependency_audit_packages": 29,
+    "known_package_advisories_returned": 0,
+    "secret_scan": "detect_secrets_1_5_0_no_verify_twelve_explicit_public_targets_no_candidates",
+    "image_advisories": "unverified",
+    "historical_gitguardian_incidents": "unresolved"
+  },
+  "paid_model_calls": 0,
+  "synthetic_only": true,
+  "engineering_approval": false,
+  "publication": "local_no_commit_push_merge_or_deployment",
+  "source_sha256": {
+    "live_model.py": "61223ae06dd00ba22c1991bf21929d67073320b28b17d9693bc768d8548b85b7",
+    "sso_agent.py": "eee29868db61debdf7df0e97786fffd783c45ef8be413cfecbef65807ec067a9",
+    "sso_portal.py": "0313344d9abd1585d38c17956213964da23e874fe0fbb484953ef61ba2c9a4a0",
+    "openrouter_planner.py": "20370c4073c8aaa9567f29d3af21641d7aea48927c2e94ea74f0e7f580a62ac6",
+    "agent_control.py": "bd6ccecd1f9f9caceedc2bcb8fbfe0a6636fcbd592e4f0fb453ef1fcafeaf630",
+    "scripts/start_sso_demo.py": "989f0003e1921580cc2be36f2eddabefe56152e2650b701aed6063bfdedc2688",
+    "scripts/verify_sso_live.py": "ea57e51129542bb8708d28c4279c26ddbb3bd2f952692503c8a9aa962f9b2c20",
+    "scripts/check_live_agent_guards.py": "55b2ea4cb3221502be6fc3c5caf577e984c8930402ec0e605ea63d96796b95bd",
+    "scripts/live_agent_preflight.py": "24c65f1476033c76b4fe19cbf90788d791da1bf9cc5e8d7c4d1cfad6ef92b861",
+    "tests/test_live_agent.py": "c7852550611309d1a9628e84f602156dbc7c6c39f466db49e4a7763f842a25d8"
+  }
+}
