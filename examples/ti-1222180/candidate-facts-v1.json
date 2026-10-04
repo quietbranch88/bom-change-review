@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "candidate_evidence_draft_not_runtime_catalog",
+  "extraction_method": "assistant_manual_source_read_and_pdf_visual_check",
+  "human_fact_review": "pending",
+  "engineering_suitability": "not_evaluated",
+  "candidate": {
+    "model": "LM5155",
+    "full_orderable_part": null,
+    "selection_basis": "Previously selected public TI datasheet; historical TI reply names this candidate. Reply was not reverified on 2026-09-27 because the forum fetch failed.",
+    "requester_selected": false
+  },
+  "source": {
+    "source_id": "TI-LM5155-SNVSB75E-20260927",
+    "url": "https://www.ti.com/lit/ds/symlink/lm5155.pdf",
+    "document_id": "SNVSB75E",
+    "revision": "E",
+    "revision_date": "2023-08",
+    "retrieved_on": "2026-09-27",
+    "pdf_sha256": "e65e47f61e64e3c3dc9cc1905f53bf014713abf562c0c6138b32db26a4b6f466",
+    "page_numbering": "printed 1-based PDF page; pages 5 and 6 visually checked",
+    "applicable_models_in_header": ["LM5155", "LM51551"],
+    "full_pdf_in_public_repo": false
+  },
+  "facts": [
+    {
+      "fact_id": "F-BIAS-INTERNAL",
+      "property": "bias_pin_voltage",
+      "specification_class": "recommended_operating",
+      "range": {"min": 3.5, "max": 45, "unit": "V"},
+      "conditions": {
+        "vcc_supply": "internal_vcc_regulator",
+        "junction_temperature": {"min": -40, "max": 125, "unit": "degC"}
+      },
+      "locator": {"page": 6, "section": "8.3", "row": "VBIAS", "footnote": "2"},
+      "case_condition_verified": false
+    },
+    {
+      "fact_id": "F-BIAS-TIED",
+      "property": "bias_pin_voltage",
+      "specification_class": "recommended_operating",
+      "range": {"min": 2.97, "max": 16, "unit": "V"},
+      "conditions": {
+        "vcc_supply": "vcc_directly_connected_to_bias",
+        "junction_temperature": {"min": -40, "max": 125, "unit": "degC"}
+      },
+      "locator": {"page": 6, "section": "8.3", "row": "VBIAS", "footnote": "2"},
+      "case_condition_verified": false
+    },
+    {
+      "fact_id": "F-BIAS-ABS",
+      "property": "bias_to_agnd_voltage",
+      "specification_class": "absolute_maximum",
+      "range": {"min": -0.3, "max": 50, "unit": "V"},
+      "conditions": {"reference_node": "AGND"},
+      "locator": {"page": 5, "section": "8.1", "row": "BIAS to AGND", "footnote": "1"},
+      "allowed_for_normal_operation_pass": false
+    }
+  ],
+  "assessment": {
+    "status": "not_evaluated",
+    "missing_case_evidence": [
+      "Whether the required board input maps directly to candidate BIAS voltage",
+      "Actual VCC/BIAS wiring and relevant operating conditions"
+    ],
+    "separate_checks_not_completed": [
+      "Full orderable identity and AEC-Q100 evidence",
+      "Output capability and continuous versus peak load",
+      "Topology implementation, pin compatibility, layout and thermal behavior"
+    ],
+    "notice": "Source facts are not application facts. No implemented comparison or whole-circuit pass is claimed."
+  }
+}

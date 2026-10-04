@@ -1,0 +1,16 @@
+{
+  "case_id": "E01",
+  "fields": {
+    "subject_parts": {"value": ["LT8301ESS"], "unit": null, "evidence_ids": ["Q1"]},
+    "requester_candidates": {"value": [], "unit": null, "evidence_ids": []},
+    "input_min": {"value": 14, "unit": "V", "evidence_ids": ["Q2"]},
+    "input_max": {"value": 30, "unit": "V", "evidence_ids": ["Q2"]},
+    "output_voltage": {"value": 5, "unit": "V", "evidence_ids": ["Q2"]},
+    "output_current": {"value": 1.5, "unit": "A", "evidence_ids": ["Q2"]},
+    "output_power": {"value": 7.5, "unit": "W", "evidence_ids": ["Q2"]},
+    "topology": {"value": "flyback", "unit": null, "evidence_ids": ["Q2"]},
+    "qualification": {"value": "AEC-Q100", "unit": null, "evidence_ids": ["Q2"]},
+    "continuous_current": {"value": null, "unit": null, "evidence_ids": []},
+    "pcb_changes_allowed": {"value": null, "unit": null, "evidence_ids": []}
+  }
+}

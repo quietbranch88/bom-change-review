@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-25",
+  "environment": "Windows, Python 3.13.14, ephemeral jsonschema 4.25.1",
+  "dialects": ["Draft7", "Draft202012"],
+  "variant_count": 5,
+  "schema_dialect_checks_passed": 10,
+  "instance_assertions_passed": 90,
+  "invalid_schema_negative_controls_detected": 2,
+  "original_E01_valid_in_both_dialects": true,
+  "original_request_sha256_unchanged": "9092519523221bdbc40a877936d67d08fa3a627604de876ae65fa62106a98e84",
+  "provider_calls_this_step": 0,
+  "provider_compatibility_verified": false,
+  "runtime_modified": false,
+  "scope": "Deterministic local schema checks, not model quality, provider acceptance or hardware verification"
+}

@@ -1,0 +1,466 @@
+{
+  "dataset_id": "hardware-intake-dev-v1",
+  "reference_status": "AI_source_backed_draft_human_review_pending",
+  "not_engineering_approval": true,
+  "cases": {
+    "E01": {
+      "case_id": "E01",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "LT8301ESS"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [],
+          "unit": null,
+          "evidence_ids": []
+        },
+        "input_min": {
+          "value": 14,
+          "unit": "V",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "input_max": {
+          "value": 30,
+          "unit": "V",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "output_voltage": {
+          "value": 5,
+          "unit": "V",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "output_current": {
+          "value": 1.5,
+          "unit": "A",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "output_power": {
+          "value": 7.5,
+          "unit": "W",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "topology": {
+          "value": "flyback",
+          "unit": null,
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "qualification": {
+          "value": "AEC-Q100",
+          "unit": null,
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "continuous_current": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        },
+        "pcb_changes_allowed": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    },
+    "E02": {
+      "case_id": "E02",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "LM5155"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [
+            "LM5156",
+            "LM5157"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "pcb_changes_allowed": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        },
+        "hiccup_required": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        },
+        "input_min": {
+          "value": null,
+          "unit": "V",
+          "evidence_ids": []
+        }
+      }
+    },
+    "E03": {
+      "case_id": "E03",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "TXB0104"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [],
+          "unit": null,
+          "evidence_ids": []
+        },
+        "signal_from": {
+          "value": 1.8,
+          "unit": "V",
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "signal_to": {
+          "value": 3.3,
+          "unit": "V",
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "pin_compatible_required": {
+          "value": true,
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "pcb_changes_allowed": {
+          "value": false,
+          "unit": null,
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "output_voltage": {
+          "value": null,
+          "unit": "V",
+          "evidence_ids": []
+        }
+      }
+    },
+    "E04": {
+      "case_id": "E04",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "MT53E768M32D4DT-046 AIT"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [
+            "MT53E768M32D2ZW-046 AAT"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "processor": {
+          "value": "MIMX8ML8CVNKZAB",
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "original_dies": {
+          "value": 4,
+          "unit": null,
+          "evidence_ids": [
+            "Q3"
+          ]
+        },
+        "candidate_dies": {
+          "value": 2,
+          "unit": null,
+          "evidence_ids": [
+            "Q3"
+          ]
+        },
+        "compatibility_verified": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    },
+    "E05": {
+      "case_id": "E05",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "MC68332ACEH25"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [
+            "SPAKMC332AVFC16"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "no_firmware_change_desired": {
+          "value": true,
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "original_clock": {
+          "value": 25,
+          "unit": "MHz",
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "candidate_clock": {
+          "value": 16,
+          "unit": "MHz",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "external_crystal": {
+          "value": 32.768,
+          "unit": "kHz",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "compatibility_verified": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    },
+    "E06": {
+      "case_id": "E06",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "SN74LVC1G125DBV"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [],
+          "unit": null,
+          "evidence_ids": []
+        },
+        "lifecycle_requested": {
+          "value": true,
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "material_declaration_requested": {
+          "value": true,
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "current_lifecycle": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    },
+    "E07": {
+      "case_id": "E07",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "SN75C1168PWE4",
+            "TLC3702CDG4"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1",
+            "Q2"
+          ]
+        },
+        "requester_candidates": {
+          "value": [],
+          "unit": null,
+          "evidence_ids": []
+        },
+        "sn75_historical_status": {
+          "value": "Active",
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "lifecycle_requested": {
+          "value": true,
+          "unit": null,
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "current_lifecycle": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    },
+    "E08": {
+      "case_id": "E08",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "iMX6Dual"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [
+            "iMX6DualPlus"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "pcb_changes_allowed": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        },
+        "compatibility_verified": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    },
+    "E09": {
+      "case_id": "E09",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "LM5164QDDARQ1"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [],
+          "unit": null,
+          "evidence_ids": []
+        },
+        "pin_compatible_required": {
+          "value": true,
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "output_current_min": {
+          "value": 500,
+          "unit": "mA",
+          "evidence_ids": [
+            "Q2"
+          ]
+        },
+        "qualification": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    },
+    "E10": {
+      "case_id": "E10",
+      "fields": {
+        "subject_parts": {
+          "value": [
+            "AP7362-33SP-13"
+          ],
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "requester_candidates": {
+          "value": [],
+          "unit": null,
+          "evidence_ids": []
+        },
+        "pin_compatible_required": {
+          "value": true,
+          "unit": null,
+          "evidence_ids": [
+            "Q1"
+          ]
+        },
+        "output_voltage": {
+          "value": null,
+          "unit": "V",
+          "evidence_ids": []
+        },
+        "pcb_changes_allowed": {
+          "value": null,
+          "unit": null,
+          "evidence_ids": []
+        }
+      }
+    }
+  }
+}

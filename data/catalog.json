@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-09-25",
+  "review_status": "assistant_source_checked_human_pending",
+  "source_capture": "paraphrased_facts_not_full_document_snapshots",
+  "models": {
+    "LM5155": {
+      "package": "WSON DSS 12-pin",
+      "hiccup": {"value": false, "source_ids": ["S03"]}
+    },
+    "LM51551": {
+      "package": "WSON DSS 12-pin",
+      "hiccup": {"value": true, "source_ids": ["S03"]}
+    },
+    "LM5156H": {
+      "package": "HTSSOP PWP 14-pin",
+      "hiccup": {"value": null, "source_ids": []}
+    }
+  },
+  "candidate_pairs": {
+    "LM5155->LM51551": {"pin_for_pin": true, "source_ids": ["S01"]},
+    "LM5155->LM5156H": {"pin_for_pin": false, "source_ids": ["S01", "S02"]}
+  },
+  "sources": {
+    "S01": {
+      "url": "https://www.ti.com/product/LM5155",
+      "locator": "Similar products and package information",
+      "version": "dynamic product page observed 2026-09-25",
+      "fact": "LM51551 is listed as pin-for-pin with added hiccup protection. LM5156H is listed as different pinout. LM5155 uses a 12-pin WSON package."
+    },
+    "S02": {
+      "url": "https://www.ti.com/product/LM5156H",
+      "locator": "Product details: HTSSOP PWP 14 pins",
+      "version": "dynamic product page observed 2026-09-25",
+      "fact": "LM5156H has a 14-pin HTSSOP package; it is not the same model as LM5156."
+    },
+    "S03": {
+      "url": "https://www.ti.com/document-viewer/LM5155/datasheet/GUID-1164172C-0470-43FB-9472-A372BB56068B",
+      "locator": "Section 6 Device Comparison Table",
+      "version": "SNVSB75E, HTML header August 2023; observed 2026-09-25",
+      "fact": "Hiccup mode protection: LM5155 disabled; LM51551 enabled."
+    }
+  }
+}

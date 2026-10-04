@@ -1,0 +1,42 @@
+{
+  "origin": "synthetic_fixture",
+  "notice": "AI-authored canned replies and manual mappings; not an engineer response, model extraction or physical evidence.",
+  "scenarios": [
+    {
+      "id": "internal",
+      "source_id": "SIM-INTERNAL",
+      "text": "【模擬回覆，非本案證據】假設需求輸入直接對應 BIAS，使用內部 VCC 穩壓器，接面溫度為 -20 至 85°C。",
+      "application": {
+        "input_maps_to_bias": true,
+        "vcc_supply": "internal_vcc_regulator",
+        "junction_temperature": {"min": -20, "max": 85, "unit": "degC"},
+        "reviewer": "SIM-reviewer-not-an-engineer",
+        "reference": "SIM-INTERNAL: invented wiring and temperature, no physical evidence"
+      }
+    },
+    {
+      "id": "tied",
+      "source_id": "SIM-TIED",
+      "text": "【模擬回覆，非本案證據】假設需求輸入直接對應 BIAS，VCC 直接接 BIAS，接面溫度為 -20 至 85°C。",
+      "application": {
+        "input_maps_to_bias": true,
+        "vcc_supply": "vcc_directly_connected_to_bias",
+        "junction_temperature": {"min": -20, "max": 85, "unit": "degC"},
+        "reviewer": "SIM-reviewer-not-an-engineer",
+        "reference": "SIM-TIED: invented wiring and temperature, no physical evidence"
+      }
+    },
+    {
+      "id": "unknown",
+      "source_id": "SIM-UNKNOWN",
+      "text": "【模擬回覆，非本案證據】假設使用內部 VCC 穩壓器，接面溫度為 -20 至 85°C，但還不知道需求輸入是否直接對應 BIAS。",
+      "application": {
+        "input_maps_to_bias": null,
+        "vcc_supply": "internal_vcc_regulator",
+        "junction_temperature": {"min": -20, "max": 85, "unit": "degC"},
+        "reviewer": "SIM-reviewer-not-an-engineer",
+        "reference": "SIM-UNKNOWN: missing mapping intentionally retained"
+      }
+    }
+  ]
+}

@@ -1,0 +1,480 @@
+{
+  "dataset_id": "hardware-intake-dev-v1",
+  "retrieved_on": "2026-09-25",
+  "split": "development_only",
+  "adaptation": "AI-authored Traditional Chinese paraphrases of public threads; not verbatim raw documents, not independent holdout.",
+  "field_definitions": {
+    "subject_parts": {
+      "type": "string_array",
+      "unit": null,
+      "description": "提問正文中被替換或被查詢的原始料號；可多個，保留大小寫、空格、尾碼；不是網頁標籤。"
+    },
+    "requester_candidates": {
+      "type": "string_array",
+      "unit": null,
+      "description": "提問者在正文或補充中提出／轉述的候選；不含其他人的回覆。沒有則 []，證據 []。"
+    },
+    "input_min": {
+      "type": "number",
+      "unit": "V",
+      "description": "需求的輸入電壓下限；沒有則 null。"
+    },
+    "input_max": {
+      "type": "number",
+      "unit": "V",
+      "description": "需求的輸入電壓上限；沒有則 null。"
+    },
+    "output_voltage": {
+      "type": "number",
+      "unit": "V",
+      "description": "明確要求的電源輸出電壓，不能由料號猜。"
+    },
+    "output_current": {
+      "type": "number",
+      "unit": "A",
+      "description": "正文的輸出電流數值，不推定峰值／連續。"
+    },
+    "output_power": {
+      "type": "number",
+      "unit": "W",
+      "description": "正文明列的輸出功率，不自行計算補值。"
+    },
+    "topology": {
+      "type": "string",
+      "unit": null,
+      "description": "正文明确要求的拓樸，使用原文詞，例如 flyback。"
+    },
+    "qualification": {
+      "type": "string",
+      "unit": null,
+      "description": "正文明确要求的資格名稱；不能從尾碼推定。"
+    },
+    "continuous_current": {
+      "type": "boolean",
+      "unit": null,
+      "description": "正文是否明確說電流是連續值；未交代則 null。"
+    },
+    "pcb_changes_allowed": {
+      "type": "boolean",
+      "unit": null,
+      "description": "明確允許改板 true、明確禁止 false；詢問改板風險或只要求腳位相容，不等於明確禁止，填 null。"
+    },
+    "pin_compatible_required": {
+      "type": "boolean",
+      "unit": null,
+      "description": "提問者是否明確要求 pin-to-pin；沒有就 null。"
+    },
+    "hiccup_required": {
+      "type": "boolean",
+      "unit": null,
+      "description": "需求明確要 hiccup 才 true，明確禁止才 false；沒有就 null。"
+    },
+    "signal_from": {
+      "type": "number",
+      "unit": "V",
+      "description": "要求的訊號電平轉換起點，不是電源輸入。"
+    },
+    "signal_to": {
+      "type": "number",
+      "unit": "V",
+      "description": "要求的訊號電平轉換終點，不是電源輸出。"
+    },
+    "processor": {
+      "type": "string",
+      "unit": null,
+      "description": "提問者指出系統搭配的處理器完整型號。"
+    },
+    "original_dies": {
+      "type": "number",
+      "unit": null,
+      "description": "提問者描述原記憶體的 die 數，不改寫成 rank 數。"
+    },
+    "candidate_dies": {
+      "type": "number",
+      "unit": null,
+      "description": "提問者描述候選記憶體的 die 數。"
+    },
+    "compatibility_verified": {
+      "type": "boolean",
+      "unit": null,
+      "description": "提問者明確提供已完成驗證結果才 true/false；詢問可否相容、廠商推薦或宣傳不算已驗證，填 null。"
+    },
+    "no_firmware_change_desired": {
+      "type": "boolean",
+      "unit": null,
+      "description": "提問者是否希望免改韌體；希望免改不等於實際無須修改。"
+    },
+    "original_clock": {
+      "type": "number",
+      "unit": "MHz",
+      "description": "原 MCU 的額定時脈，如正文所述。"
+    },
+    "candidate_clock": {
+      "type": "number",
+      "unit": "MHz",
+      "description": "所討論候選 MCU 的額定時脈。"
+    },
+    "external_crystal": {
+      "type": "number",
+      "unit": "kHz",
+      "description": "外部晶振頻率；與 MCU 系統時脈分開。"
+    },
+    "lifecycle_requested": {
+      "type": "boolean",
+      "unit": null,
+      "description": "提問者是否要求確認生命週期。"
+    },
+    "material_declaration_requested": {
+      "type": "boolean",
+      "unit": null,
+      "description": "提問者是否要求材料宣告。"
+    },
+    "current_lifecycle": {
+      "type": "string",
+      "unit": null,
+      "description": "提問者已確認的當前狀態；詢問或歷史文件不能當作現況，沒有則 null。"
+    },
+    "sn75_historical_status": {
+      "type": "string",
+      "unit": null,
+      "description": "提問者引用舊資料表中 SN75C1168PWE4 的狀態，保留英文狀態名稱。"
+    },
+    "output_current_min": {
+      "type": "number",
+      "unit": "mA",
+      "description": "提問者明確可接受的最小輸出電流，正規化成 mA。"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "E01",
+      "title": "LT8301ESS：標籤不是原料",
+      "url": "https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1222180/lm5155-replace-lt8301ess",
+      "source_access": "page_read",
+      "source_locator": "initial question body; product tag; first TI reply",
+      "blocks": [
+        {
+          "id": "M1",
+          "role": "metadata",
+          "text": "網頁產品標籤：LM5155。"
+        },
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "請建議能替換 LT8301ESS 的方案。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "需求為 flyback、AEC-Q100；輸入 14–30 V，輸出 5 V，1.5 A，7.5 W。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "支援人員提出 LM5155；若偏好 converter，另提 LM5157-Q1。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "input_min",
+        "input_max",
+        "output_voltage",
+        "output_current",
+        "output_power",
+        "topology",
+        "qualification",
+        "continuous_current",
+        "pcb_changes_allowed"
+      ]
+    },
+    {
+      "case_id": "E02",
+      "title": "LM5155：缺料與使用者候選",
+      "url": "https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1093801/lm5155-possible-alternatives-to-replace-lm5155",
+      "source_access": "official_search_index_page_timeout",
+      "source_locator": "initial question and first TI reply; historical supply concern",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "LM5155 當時不好取得，現有 PoE BT 設計使用它，想找替代方案。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "提問者正在考慮 LM5156、LM5157，詢問有無其他選擇。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "回覆另談到 LM5156H、LM51561、LM51561H 等可能方向。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "pcb_changes_allowed",
+        "hiccup_required",
+        "input_min"
+      ]
+    },
+    {
+      "case_id": "E03",
+      "title": "TXB0104：訊號電平與不改板",
+      "url": "https://e2e.ti.com/support/logic-group/logic/f/logic-forum/1464630/txb0104-q1-txb0104-replacement-material",
+      "source_access": "page_read",
+      "source_locator": "initial text body; no interpretation of attached schematic",
+      "blocks": [
+        {
+          "id": "M1",
+          "role": "metadata",
+          "text": "頁面產品標籤：TXB0104-Q1。"
+        },
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "正文希望找功能類似 TXB0104 且 pin-to-pin 的料，實現 1.8 V 到 3.3 V 的訊號轉換。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "PCB 已完成，要求不修改 PCB。提問者發現現有接法 VCCA > VCCB，不符合原元件條件。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "回覆列出 TXU0104-Q1、TXU0204-Q1、TXU0304-Q1，並附訊號方向條件。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "signal_from",
+        "signal_to",
+        "pin_compatible_required",
+        "pcb_changes_allowed",
+        "output_voltage"
+      ]
+    },
+    {
+      "case_id": "E04",
+      "title": "LPDDR4：處理器不是被替換的記憶體",
+      "url": "https://community.nxp.com/t5/i-MX-Processors/IMX-8M-plus-quad-lpddr-compatibility/m-p/1998106",
+      "source_access": "page_read",
+      "source_locator": "2024-11-14 initial question and support reply",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "系統處理器為 MIMX8ML8CVNKZAB。提問者表示原 LPDDR4 MT53E768M32D4DT-046 AIT 已停產。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "經銷商建議改用 MT53E768M32D2ZW-046 AAT；提問者請原廠確認相容性。"
+        },
+        {
+          "id": "Q3",
+          "role": "question",
+          "text": "原記憶體有 4 dies，候選有 2 dies，部分 CKE 與 CS 訊號將不使用，詢問是否需要調整。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "NXP 回覆表示 DDR 工具能設定只用一個 CS。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "processor",
+        "original_dies",
+        "candidate_dies",
+        "compatibility_verified"
+      ]
+    },
+    {
+      "case_id": "E05",
+      "title": "MC68332：期望與可行性分開",
+      "url": "https://community.nxp.com/t5/8-bit-Microcontrollers/MC68332-Replacement-amp-25MHz-gt-16MHz-Compatibility/m-p/2329442",
+      "source_access": "page_read",
+      "source_locator": "2026-03-09 question and 2026-03-27 support reply",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "現在使用 MC68332ACEH25（25 MHz），希望找到不用改韌體的直接替代品。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "也詢問若改成 SPAKMC332AVFC16（16 MHz）且沿用 32.768 kHz 外部晶振，能否運作，是否需要調整計時及通訊設定。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "NXP 回覆提醒依賴系統時脈的設定需要重新校準。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "no_firmware_change_desired",
+        "original_clock",
+        "candidate_clock",
+        "external_crystal",
+        "compatibility_verified"
+      ]
+    },
+    {
+      "case_id": "E06",
+      "title": "不完整料號：不要偷偷修正原始輸入",
+      "url": "https://e2e.ti.com/support/logic-group/logic/f/logic-forum/1282284/sn74lvc1g125-sn74lvc1g125dbv",
+      "source_access": "page_read",
+      "source_locator": "initial inquiry and first two replies; later follow-ups excluded",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "請提供 SN74LVC1G125DBV 的目前生命週期，以及 IPC 1752 或可提供的材料宣告。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "另詢問 PFAS 狀態。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "回覆更正料號為 SN74LVC1G125DBVR 或 SN74LVC1G125DBVT，並談到當時的狀態。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "lifecycle_requested",
+        "material_declaration_requested",
+        "current_lifecycle"
+      ]
+    },
+    {
+      "case_id": "E07",
+      "title": "歷史 Active 不等於現況",
+      "url": "https://e2e.ti.com/support/amplifiers-group/amplifiers/f/amplifiers-forum/1276292/tlc3702-case-576614-technical-data-inquiry",
+      "source_access": "page_read",
+      "source_locator": "initial inquiry only for facts; replies included as distractors",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "提問者看到歷史資料表將 SN75C1168PWE4 列為有效且 Active，想確認是否如今已不再供應。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "另一份資料表列有 TLC3702CDG4，提問者也要求確認目前生命週期。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "回覆討論 LTB、替代型號以及管裝與捲帶版本。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "sn75_historical_status",
+        "lifecycle_requested",
+        "current_lifecycle"
+      ]
+    },
+    {
+      "case_id": "E08",
+      "title": "iMX6：相容性問題不是驗證結果",
+      "url": "https://community.nxp.com/t5/i-MX-Processors/Is-it-simply-possible-to-replace-an-i-MX6Dual-by-an-i/td-p/962278",
+      "source_access": "page_read",
+      "source_locator": "2019-09-24 initial question; 2019-09-26 reply",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "现有設計使用 iMX6Dual，影音處理需求提高而遇到記憶體存取限制，考慮改成 iMX6DualPlus。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "提問者引用產品頁腳位相容宣傳，詢問在既有 PCB 上能否替換、需要檢查或改什麼、有哪些風險。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "NXP 回覆指向 EB810 比較文件。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "pcb_changes_allowed",
+        "compatibility_verified"
+      ]
+    },
+    {
+      "case_id": "E09",
+      "title": "LM5164：補充需求的 500 mA 下限",
+      "url": "https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/988665/lm5164-q1-pin-to-pin-compatible",
+      "source_access": "official_search_index_page_timeout",
+      "source_locator": "initial question and requester clarification by project engineer; email omitted",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "客戶需要 LM5164QDDARQ1 的 pin-to-pin 替代品。"
+        },
+        {
+          "id": "Q2",
+          "role": "question",
+          "text": "需求方補充：電動車專案即將到期，線上商店找不到這顆料；Gerber 已完成待製板，希望直接替換。輸出電流可以降低，但不能低於 500 mA。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "支援人員提到 LM5163 或商規版本等方向。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "pin_compatible_required",
+        "output_current_min",
+        "qualification"
+      ]
+    },
+    {
+      "case_id": "E10",
+      "title": "AP7362：料號尾碼不能推導設計需求",
+      "url": "https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/994420/alternative-to-ap7362-33sp-13",
+      "source_access": "page_read",
+      "source_locator": "initial question and TI reply",
+      "blocks": [
+        {
+          "id": "Q1",
+          "role": "question",
+          "text": "請問 TI 有沒有 AP7362-33SP-13 的 pin-to-pin 替代料？提問者說 BOM 搜尋工具未找到結果。"
+        },
+        {
+          "id": "R1",
+          "role": "reply",
+          "text": "回覆提出 TPS7A7001、LP38512-ADJ 等方向，並說明固定輸出替代的限制。"
+        }
+      ],
+      "fields": [
+        "subject_parts",
+        "requester_candidates",
+        "pin_compatible_required",
+        "output_voltage",
+        "pcb_changes_allowed"
+      ]
+    }
+  ]
+}

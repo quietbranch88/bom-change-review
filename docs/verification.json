@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-04",
+  "environment": "Windows; Python 3.13.14; local isolated synthetic data",
+  "clean_index_export": {"discovered": 287, "passed": 263, "skipped": 24, "elapsed_seconds": 56.968},
+  "real_boundary": {
+    "mode": "explicit_restart_of_owned_test_container_not_fresh_bootstrap",
+    "neo4j": "5.26.29 Community",
+    "mcp_sdk": "2.2.0",
+    "negotiated_protocol": "2026-07-28",
+    "sync_tests": 4,
+    "graph_tests": 12,
+    "mcp_tests": 8,
+    "all_passed": true,
+    "real_cli_passed": true,
+    "old_snapshot_unchanged": true,
+    "container_stopped": true,
+    "graceful_shutdown_verified": false,
+    "initial_cold_bootstrap_failed": true
+  },
+  "synthetic_capacity": {"submitted": 10, "completed": 6, "busy": 4, "peak_active": 2, "remaining": 0},
+  "guard_mutations": {"count": 3, "baseline_passed": true, "assertion_failures_detected": true, "restored_passed": true},
+  "security": {
+    "bandit": "1.9.4",
+    "high": 0, "medium": 0, "low_subprocess_warnings_reviewed": 5,
+    "pip_audit": "2.10.1",
+    "locked_packages": 29,
+    "known_dependency_advisories": 0,
+    "detect_secrets": "1.5.0; no network verification; source hashes and synthetic passwords reviewed",
+    "secret_scan_candidates_reviewed_as_non_credentials": 15,
+    "container_image_advisory_scan": "blocked_login_unavailable"
+  },
+  "paid_model_calls": 0,
+  "engineering_approval": false,
+  "hash_normalization": "UTF-8 bytes; CRLF normalized to LF to compare Windows exports and Git blobs",
+  "runtime_sha256": {
+    "interview_demo.py": "AAF01B8246A0F9DBBCC574F8C88996BFB99D00F639241AD2D4A94C88F829893F",
+    "projection_sync.py": "BE7FCFB49DB9DAA0AD0A48C6B7CD06E55A2E2DCC3102EED289A939BCB76FA060",
+    "projection_adapters.py": "7FA62E10EC495B496953E25E49AD1FEBE8590356BAC6B850C904F3EE5CD15020",
+    "demo_service.py": "AC4206D18BEAA577E59E2839B933F6DEF550C78CF5C8CBB01DEDC4999E73CE79",
+    "system_demo.py": "D69A21ABB5411EB54CA33724F9A994533B11053C68677CF2133C7EBE2784374A",
+    "evidence_mcp.py": "7E7B33FCAB7A3DF36BC51675AF93FC8323E35BE203121D9537BDF565FABD049C",
+    "agent_control.py": "35401CF395F599DE2FA75112F7860113BDCC7641B83BC85FB7A49C1654220050",
+    "uv.lock": "6FFF7A2ABD4ACC477FC8B99DD1C59D96586AC5D9D20B97DDA0FDD2D99D6BB2F6"
+  }
+}

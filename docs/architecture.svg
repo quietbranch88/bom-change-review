@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+<title id="title">AI 替料評估助手架構</title>
+<desc id="desc">上方為不可覆寫 JSON、SQLite 同步紀錄與 Neo4j 投影及失敗重試。下方為有限接案、Agent 控制與 MCP 唯讀查詢。橘色為合成邊界，紫色虛線為待接入模型。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#506680"/></marker></defs>
+<rect width="1440" height="900" fill="#f3f6fa"/>
+<g font-family="Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif" fill="#172d46">
+<text x="64" y="63" font-size="30" font-weight="700">AI 替料評估助手</text>
+<text x="64" y="98" font-size="18">依據可追溯 · 缺項有動作 · 失敗可恢復 · 容量有邊界</text>
+<rect x="48" y="128" width="1344" height="324" rx="20" fill="white" stroke="#dce4ee"/>
+<text x="72" y="166" font-size="22" font-weight="700">資料與同步</text>
+<rect x="78" y="196" width="244" height="104" rx="12" fill="#fff2d8" stroke="#d5a955"/>
+<text x="98" y="230" font-size="19" font-weight="700">公開來源與覆核情境</text>
+<text x="98" y="262" font-size="16">覆核／接法明確標示模擬</text>
+<rect x="370" y="196" width="244" height="104" rx="12" fill="#e5effc" stroke="#6994c2"/>
+<text x="390" y="230" font-size="19" font-weight="700">JSON 案件版本</text>
+<text x="390" y="262" font-size="16">原始依據 · 不覆寫舊版</text>
+<rect x="662" y="196" width="244" height="104" rx="12" fill="#e5effc" stroke="#6994c2"/>
+<text x="682" y="230" font-size="19" font-weight="700">SQLite 同步工作</text>
+<text x="682" y="262" font-size="16">pending / failed / synced</text>
+<rect x="1010" y="196" width="320" height="104" rx="12" fill="#e4f3ea" stroke="#75a98b"/>
+<text x="1030" y="230" font-size="19" font-weight="700">Neo4j 版本投影</text>
+<text x="1030" y="262" font-size="16">獨立讀回 · 核對完整內容</text>
+<g fill="none" stroke="#506680" stroke-width="2.5" marker-end="url(#arrow)">
+<path d="M322 247H362"/><path d="M614 247H654"/><path d="M906 247H1002"/>
+<path d="M1160 300V362H786V308"/>
+</g>
+<text x="914" y="227" font-size="14">匯入</text>
+<text x="884" y="389" font-size="16">讀回一致才標記 synced</text>
+<text x="78" y="350" font-size="17">回應遺失：圖可能已提交，工作仍記 failed</text>
+<text x="78" y="382" font-size="17">明確重試：相同版本再匯入，核對結果並保留舊依據</text>
+<text x="78" y="418" font-size="15" fill="#62758a">預設使用假圖；隔離測試另驗證真實 Neo4j 與 SQLite</text>
+<rect x="48" y="474" width="1344" height="324" rx="20" fill="white" stroke="#dce4ee"/>
+<text x="72" y="512" font-size="22" font-weight="700">查詢與多人任務</text>
+<rect x="78" y="546" width="244" height="104" rx="12" fill="#fff2d8" stroke="#d5a955"/>
+<text x="98" y="580" font-size="19" font-weight="700">合成使用者與案件權限</text>
+<text x="98" y="612" font-size="16">不同任務的資料分開</text>
+<rect x="370" y="546" width="244" height="104" rx="12" fill="#e5effc" stroke="#6994c2"/>
+<text x="390" y="580" font-size="19" font-weight="700">有限接案與 FIFO 排隊</text>
+<text x="390" y="612" font-size="16">2 個進行中 · 4 個等待</text>
+<rect x="662" y="546" width="244" height="104" rx="12" fill="#e5effc" stroke="#6994c2"/>
+<text x="682" y="580" font-size="19" font-weight="700">Agent 控制層</text>
+<text x="682" y="612" font-size="16">工具／版本／次數／引用</text>
+<rect x="1010" y="546" width="320" height="104" rx="12" fill="#e4f3ea" stroke="#75a98b"/>
+<text x="1030" y="580" font-size="19" font-weight="700">MCP 唯讀工具</text>
+<text x="1030" y="612" font-size="16">規格 · 缺項 · 判斷依據</text>
+<g fill="none" stroke="#506680" stroke-width="2.5" marker-end="url(#arrow)">
+<path d="M322 598H362"/><path d="M614 598H654"/><path d="M906 598H1002"/>
+<path d="M1170 546V464H1360V247H1338"/>
+</g>
+<rect x="662" y="692" width="244" height="70" rx="12" fill="#fff2d8" stroke="#d5a955"/>
+<text x="682" y="722" font-size="18" font-weight="700">目前：腳本規劃器</text>
+<text x="682" y="745" font-size="14">多人測試使用受控工具延遲</text>
+<path d="M785 692V658" fill="none" stroke="#506680" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="1010" y="692" width="320" height="70" rx="12" fill="#f0eafa" stroke="#9577b9" stroke-dasharray="7 5"/>
+<text x="1030" y="722" font-size="18" font-weight="700">待接入：OpenRouter 模型</text>
+<text x="1030" y="745" font-size="14">真實預算／供應商用量／評測</text>
+<path d="M1010 726H944V664H820V650" fill="none" stroke="#9577b9" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="78" y="695" font-size="17">超量回報繁忙 · 等候到期停止</text>
+<text x="78" y="728" font-size="17">取消後清理名額 · 不共用目前案件</text>
+<text x="78" y="761" font-size="15" fill="#62758a">MCP／DB 真實邊界另測；多人數值不是正式效能承諾</text>
+<text x="64" y="836" font-size="17">藍色：已實作控制　綠色：資料接口　橘色：合成邊界　紫色虛線：待實作</text>
+<text x="64" y="868" font-size="16" fill="#62758a">評估範圍：BIAS 建議工作電壓；來源事實 pending；所有結果仍需要工程覆核</text>
+</g></svg>

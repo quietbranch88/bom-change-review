@@ -1,0 +1,14 @@
+{
+  "source_id": "SIM-TEXT-1",
+  "source_sha256": "REPLACE_WITH_CAPTURED_SOURCE_SHA256",
+  "permission": {
+    "status": "allowed",
+    "quotes": ["可以改 PCB"]
+  },
+  "constraints": [
+    {"quote": "接頭位置不能動", "interpretation": "接頭位置固定，不因允許改板而放寬。"}
+  ],
+  "open_questions": [
+    {"quote": "費用要先給主管確認", "interpretation": "費用仍需確認，未取得主管同意的證據。"}
+  ]
+}

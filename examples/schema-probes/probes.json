@@ -1,0 +1,36 @@
+{
+  "purpose": "Offline synthetic schema compatibility probes; no network runner or execution permission",
+  "live_status": "not_run",
+  "messages": [
+    {"role": "system", "content": "Extract only the stated input voltage. Return JSON with value, unit and evidence_ids according to response_format. Do not add facts."},
+    {"role": "user", "content": "Q1: Input voltage is 14 V. Use Q1 as the evidence ID."}
+  ],
+  "base_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["value", "unit", "evidence_ids"],
+    "properties": {
+      "value": {"type": "number"},
+      "unit": {"type": "string", "enum": ["V"]},
+      "evidence_ids": {"type": "array", "items": {"type": "string", "enum": ["Q1"]}}
+    }
+  },
+  "variants": [
+    {"id": "M00", "change": "Minimal control", "property_overrides": {}},
+    {"id": "M01", "change": "Only omit explicit unit type; enum still restricts it to V", "property_overrides": {"unit": {"enum": ["V"]}}},
+    {"id": "M02", "change": "Only require unique evidence IDs", "property_overrides": {"evidence_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "enum": ["Q1"]}}}},
+    {"id": "M03", "change": "Only allow null value using a type array", "property_overrides": {"value": {"type": ["number", "null"]}}},
+    {"id": "M04", "change": "Only allow null value using anyOf; compare M03 as equivalent semantics", "property_overrides": {"value": {"anyOf": [{"type": "number"}, {"type": "null"}]}}}
+  ],
+  "instances": [
+    {"id": "stated_value", "data": {"value": 14, "unit": "V", "evidence_ids": ["Q1"]}, "accepted_by": ["M00", "M01", "M02", "M03", "M04"]},
+    {"id": "unknown_value", "data": {"value": null, "unit": "V", "evidence_ids": []}, "accepted_by": ["M03", "M04"]},
+    {"id": "duplicate_evidence", "data": {"value": 14, "unit": "V", "evidence_ids": ["Q1", "Q1"]}, "accepted_by": ["M00", "M01", "M03", "M04"]},
+    {"id": "number_as_string", "data": {"value": "14", "unit": "V", "evidence_ids": ["Q1"]}, "accepted_by": []},
+    {"id": "boolean_not_number", "data": {"value": true, "unit": "V", "evidence_ids": ["Q1"]}, "accepted_by": []},
+    {"id": "wrong_unit", "data": {"value": 14, "unit": "mV", "evidence_ids": ["Q1"]}, "accepted_by": []},
+    {"id": "wrong_evidence", "data": {"value": 14, "unit": "V", "evidence_ids": ["R1"]}, "accepted_by": []},
+    {"id": "missing_unit", "data": {"value": 14, "evidence_ids": ["Q1"]}, "accepted_by": []},
+    {"id": "extra_property", "data": {"value": 14, "unit": "V", "evidence_ids": ["Q1"], "extra": true}, "accepted_by": []}
+  ]
+}
