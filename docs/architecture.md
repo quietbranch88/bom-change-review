@@ -95,7 +95,7 @@ Arrows show entrypoint calls and adapter collaboration. Workflows depend on inte
 
 ## Remaining latency and cost controls
 
-Current measurements cover demo queue/total duration, admission outcomes, peak active tasks, and separate MCP handler phases. The MCP server has one read permit per process, but its waiting callers are not bounded. Per-model permits, shared database capacity, pre-dispatch budget reservations, provider-usage settlement, and real-model evaluations remain pending. Single-process limits provide no cross-worker or replica guarantees.
+Current measurements cover demo queue/total duration, admission outcomes, peak active tasks, and separate MCP handler phases. The MCP server has one read permit per process, but its waiting callers are not bounded. The separate [model-interface fixture](model-interface.md) implements pre-dispatch reservation and settlement/unknown-exposure handling with synthetic amounts. Live quotes, real billing settlement, per-model permits, shared database capacity and real-model evaluations remain pending. Single-process limits provide no cross-worker or replica guarantees.
 
 ## MCP delivery contract
 
@@ -103,6 +103,6 @@ The [three tools](mcp-contracts.md) accept only an exact snapshot ID. Unknown na
 
 Handler metadata separates queue, execution and validation time from evidence. Execution includes worker dispatch and DB waits, not only query execution. It excludes SDK framing, transport and model latency. No end-to-end latency or global capacity guarantee follows from these measurements. A read-only annotation describes intent; fixed queries are an application guard, not a database-role or authentication guarantee.
 
-A proposed real-model planner with at most two inference calls is not implemented. After a timeout, remote work and charges may remain unknown; local cancellation does not prove zero cost. A case ID is not access authorization, and a synthetic policy test is not production authentication.
+The two-response provider adapter is implemented only with a non-paid fixture transport. A real-model planner is not connected. After a timeout, remote work and charges may remain unknown; local cancellation does not prove zero cost. A case ID is not access authorization, and a synthetic policy test is not production authentication.
 
 References: [MCP tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools), [MCP authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization), [OpenRouter tool calling](https://openrouter.ai/docs/guides/features/tool-calling).

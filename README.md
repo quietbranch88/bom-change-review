@@ -10,6 +10,8 @@ Starting from a [public TI replacement question](https://e2e.ti.com/support/powe
 
 [Architecture](docs/architecture.md) · [Five-minute demo](docs/demo.md) · [MCP contracts](docs/mcp-contracts.md) · [Verification and limitations](docs/verification.md)
 
+The [non-paid model-interface demo](docs/model-interface.md) additionally exercises two provider-shaped responses, pre-dispatch reservations and conservative handling of unknown charges. It uses only a local fixture, not an OpenRouter API request.
+
 ## Run the full story
 
 Python 3.11+ is sufficient. No API key, Docker, or network is needed. Use a new output directory for each run.
@@ -49,7 +51,7 @@ Docker and uv are required. The harness writes synthetic data only to its newly 
 | Durable sync jobs and explicit retry | Implemented; SQLite plus Neo4j adapter |
 | Admission, queueing, cancellation, and deadlines | Implemented; single event loop and synthetic permission fixtures |
 | Real LLM planning and model evaluation | Pending; planner is currently scripted |
-| Pre-dispatch dollar reservation and settlement | Design only |
+| Pre-dispatch reservation and settlement | Implemented and tested with synthetic quotes/costs; live pricing and billing enforcement pending |
 | HTTP MCP OAuth and multi-tenant login | Not implemented |
 | Cross-worker global limits and durable queue recovery | Not implemented |
 | EDA simulation, hardware tests, or replacement approval | Out of scope |

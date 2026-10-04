@@ -35,7 +35,10 @@ class StopRun(Exception):
 
 SAFE_REASONS = {"invalid_planner_response", "tool_not_allowed", "invalid_tool_arguments", "tool_limit",
                 "tool_result_mismatch", "inconsistent_evidence", "insufficient_evidence", "invalid_citations",
-                "planner_limit", "evidence_unavailable", "invalid_tool_result", "tool_transport_failed"}
+                "planner_limit", "evidence_unavailable", "invalid_tool_result", "tool_transport_failed",
+                "model_budget_exhausted", "model_budget_blocked", "model_cost_unknown", "model_cost_overrun",
+                "invalid_model_quote", "model_call_limit", "invalid_model_request", "invalid_model_response",
+                "model_transport_failed", "model_transport_disabled"}
 
 
 async def run(question, snapshot_id, planner: Planner, tools: ReadTools, *, timeout_seconds=90):
@@ -44,11 +47,14 @@ async def run(question, snapshot_id, planner: Planner, tools: ReadTools, *, time
     seen = {}
 
     def result(status, reason=None, answer=None):
-        return {"mode": "scripted_planner_simulation", "status": status, "reason": reason,
+        value = {"mode": "scripted_planner_simulation", "status": status, "reason": reason,
                 "answer": answer, "counts": dict(counts), "trace": trace,
                 "paid_model_calls": 0, "engineering_approval": False}
+        if planner.kind == "provider_fixture":
+            value.update(mode="provider_contract_simulation", model_usage=planner.accounting())
+        return value
 
-    if (planner.kind != "scripted" or not isinstance(question, str) or not question.strip()
+    if (planner.kind not in {"scripted", "provider_fixture"} or not isinstance(question, str) or not question.strip()
             or len(question) > 4000 or not isinstance(snapshot_id, str)
             or re.fullmatch(ID_PATTERN, snapshot_id) is None):
         return result("stopped", "invalid_run_input_or_mode")

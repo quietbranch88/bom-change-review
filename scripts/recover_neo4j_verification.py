@@ -19,6 +19,8 @@ def main():
     parser.add_argument("--report-name", default="recovery-verification.json")
     parser.add_argument("--readiness-seconds", type=int, default=420,
                         help="Explicit bounded readiness wait, between 30 and 900 seconds")
+    parser.add_argument("--provider-contract", action="store_true",
+                        help="Also test the non-paid fixture provider over real MCP and Neo4j")
     args = parser.parse_args()
     if not 30 <= args.readiness_seconds <= 900:
         parser.error("readiness-seconds must be between 30 and 900")
@@ -68,7 +70,10 @@ def main():
         record["readiness_elapsed_seconds"] = round(time.monotonic() - ready_started, 3)
         record["phase"] = "initialize"
         client.initialize()
-        for pattern in ("test_projection_sync_live.py", "test_neo4j_live.py", "test_mcp_live.py"):
+        patterns = ["test_projection_sync_live.py", "test_neo4j_live.py", "test_mcp_live.py"]
+        if args.provider_contract:
+            patterns.append("test_provider_mcp_live.py")
+        for pattern in patterns:
             record["phase"] = pattern
             completed = harness.command([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", pattern, "-v"], env, 240)
             output = (completed.stdout + completed.stderr).replace(auth, "[REDACTED]")

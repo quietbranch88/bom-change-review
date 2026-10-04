@@ -1,6 +1,7 @@
 {
   "date": "2026-10-04",
-  "artifact": "isolated feature branch; source fingerprints below; not deployed",
+  "runtime_checkpoint": "29b750e",
+  "artifact": "MCP checkpoint before the separate provider-contract slice; source fingerprints below; not deployed",
   "base_revision": "0aa2ec54fdacbd61d5eed9033e7de65fee3edea1",
   "environment": "Windows; Python 3.13.14; MCP SDK 2.2.0; local synthetic data",
   "local_suite": {"discovered": 299, "passed": 275, "skipped_real_service": 24, "elapsed_seconds": 50.027},
