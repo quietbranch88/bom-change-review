@@ -5,5 +5,5 @@ __pycache__/
 .env.*
 output/
 .spec/
-articles/neo4j-publication.md
+articles/
 *.private.json

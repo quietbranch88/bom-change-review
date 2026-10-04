@@ -65,10 +65,8 @@ python scripts/verify_demo_guards.py
 
 核心是 Python 標準函式庫；MCP 是可選 extra。Windows-specific 私有診斷測試與需要外部服務的測試會按環境跳過。防護驗證在暫存副本移除三個 guard，確認原測試失敗，再還原通過。詳見[執行結果](docs/verification.md)。
 
-## 設計文章與程式入口
+## 程式入口
 
-- [從 LM5155 理解 Neo4j 設計](articles/neo4j-practical-guide.md)
-- [MCP 控制與多人延遲設計](articles/mcp-control-and-latency-design.md)
 - [system_demo.py](system_demo.py)：展示入口與 adapters 組裝
 - [projection_sync.py](projection_sync.py)：同步與核對流程
 - [projection_adapters.py](projection_adapters.py)：SQLite／Neo4j 邊界
