@@ -16,6 +16,12 @@ CASES = (
      "test_demo_service.DemoServiceTests.test_denied_never_executes_work"),
     ("demo_service.py", "and len(self.queue) >= self.limits.waiting:", "and False:",
      "test_demo_service.DemoServiceTests.test_finite_queue_peak_and_fifo"),
+    ("evidence_mcp.py", "elif not validators[params.name].is_valid(result):", "elif False:",
+     "test_mcp_contracts.ContractTests.test_missing_gap_completion_criterion_cannot_be_success"),
+    ("evidence_mcp.py", "if params.name not in TOOLS:", "if False:",
+     "test_mcp_contracts.ContractTests.test_unknown_tool_is_protocol_error_without_service_call"),
+    ("scripts/recover_neo4j_verification.py", "if not 30 <= args.readiness_seconds <= 900:", "if False:",
+     "test_recovery_harness.RecoveryHarnessTests.test_invalid_wait_is_rejected_before_docker_access"),
 )
 
 
@@ -24,7 +30,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="bom-guard-mutation-") as temp:
         directory = Path(temp) / "project"
         shutil.copytree(ROOT, directory, ignore=shutil.ignore_patterns(
-            ".git", ".venv", ".spec", "output", "__pycache__", ".env", ".env.*"))
+            ".git", ".venv", ".spec", "output", "articles", "__pycache__", ".env", ".env.*"))
         for name, before, after, test in CASES:
             path = directory / name
             original = path.read_bytes()
@@ -33,6 +39,8 @@ def main():
             baseline = execute(directory, test)
             if baseline.returncode:
                 raise RuntimeError("baseline_not_passing")
+            if "skipped" in baseline.stdout + baseline.stderr:
+                raise RuntimeError("mutation_test_not_exercised")
             path.write_text(original.decode("utf-8").replace(before, after), encoding="utf-8")
             mutated = execute(directory, test)
             path.write_bytes(original)

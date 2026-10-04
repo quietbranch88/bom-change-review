@@ -51,7 +51,7 @@ Real mode replaces only the sync graph-storage boundary. Concurrent-task delays 
 
 ```sh
 python -m unittest discover -s tests -v
-python scripts/verify_demo_guards.py
+uv run --frozen --extra mcp python scripts/verify_demo_guards.py
 ```
 
-The second command removes the readback, case-permission, and queue-limit guards in temporary copies, requires the original tests to fail, restores the code, and requires them to pass. Tests and expected values remain unchanged; the original checkout is not mutated.
+The second command needs the optional MCP extra. It removes six guards in temporary copies: readback, case permission, queue limit, MCP output validation, unknown tools and recovery-wait validation. It requires relevant assertion failures, restores the code, and requires passes. Skips do not count as verification. Tests and expected values remain unchanged; the original checkout is not mutated. See the [MCP contract](mcp-contracts.md) for schemas, safe errors and diagnostic timing boundaries.

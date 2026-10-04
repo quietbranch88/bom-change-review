@@ -8,7 +8,7 @@ Starting from a [public TI replacement question](https://e2e.ti.com/support/powe
 
 ![System architecture and implementation boundaries](docs/architecture.svg)
 
-[Architecture](docs/architecture.md) · [Five-minute demo](docs/demo.md) · [Verification and limitations](docs/verification.md)
+[Architecture](docs/architecture.md) · [Five-minute demo](docs/demo.md) · [MCP contracts](docs/mcp-contracts.md) · [Verification and limitations](docs/verification.md)
 
 ## Run the full story
 
@@ -60,10 +60,10 @@ Historical extraction smoke modules do not mean the current Agent is connected t
 
 ```sh
 python -m unittest discover -s tests -v
-python scripts/verify_demo_guards.py
+uv run --frozen --extra mcp python scripts/verify_demo_guards.py
 ```
 
-The core uses the Python standard library; MCP is an optional extra. Windows-only private-diagnostic tests and external-service tests are skipped where unavailable. Guard checks remove three guards in temporary copies, require the original tests to fail, then restore the code and require a pass. See [executed results](docs/verification.md).
+The core uses the Python standard library; MCP is an optional extra. Windows-only private-diagnostic tests and external-service tests are skipped where unavailable. Guard checks need the MCP extra. They remove six guards in temporary copies, including output validation, unknown-tool rejection and recovery-wait validation, require the original tests to fail, then restore the code and require a pass. A skipped test is not a pass. See [executed results](docs/verification.md).
 
 ## Code entrypoints
 

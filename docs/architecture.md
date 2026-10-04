@@ -95,7 +95,13 @@ Arrows show entrypoint calls and adapter collaboration. Workflows depend on inte
 
 ## Remaining latency and cost controls
 
-Current measurements cover demo queue/total duration, admission outcomes, and peak active tasks. Per-model and database permits, pre-dispatch budget reservations, provider-usage settlement, and real-model evaluations remain pending. Single-process limits provide no cross-worker or replica guarantees.
+Current measurements cover demo queue/total duration, admission outcomes, peak active tasks, and separate MCP handler phases. The MCP server has one read permit per process, but its waiting callers are not bounded. Per-model permits, shared database capacity, pre-dispatch budget reservations, provider-usage settlement, and real-model evaluations remain pending. Single-process limits provide no cross-worker or replica guarantees.
+
+## MCP delivery contract
+
+The [three tools](mcp-contracts.md) accept only an exact snapshot ID. Unknown names are rejected as protocol errors before application dispatch. Application validation precedes fixed Neo4j queries; tool-specific output schemas reject malformed nested evidence before it can be returned as success. Existing projections and unknown states remain readable, while engineering approval is always false.
+
+Handler metadata separates queue, execution and validation time from evidence. Execution includes worker dispatch and DB waits, not only query execution. It excludes SDK framing, transport and model latency. No end-to-end latency or global capacity guarantee follows from these measurements. A read-only annotation describes intent; fixed queries are an application guard, not a database-role or authentication guarantee.
 
 A proposed real-model planner with at most two inference calls is not implemented. After a timeout, remote work and charges may remain unknown; local cancellation does not prove zero cost. A case ID is not access authorization, and a synthetic policy test is not production authentication.
 

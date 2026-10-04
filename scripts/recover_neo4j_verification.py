@@ -17,7 +17,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--container", required=True)
     parser.add_argument("--report-name", default="recovery-verification.json")
+    parser.add_argument("--readiness-seconds", type=int, default=420,
+                        help="Explicit bounded readiness wait, between 30 and 900 seconds")
     args = parser.parse_args()
+    if not 30 <= args.readiness_seconds <= 900:
+        parser.error("readiness-seconds must be between 30 and 900")
     name = args.container
     if re.fullmatch(r"bom-neo4j-test-[0-9a-f]{12}", name) is None:
         parser.error("exact project test container required")
@@ -28,7 +32,8 @@ def main():
     if report_path.exists():
         parser.error("report already exists; preserve previous verification")
     record = {"container": name, "mode": "explicit_owned_test_recovery", "status": "failed",
-              "started_at": datetime.now(timezone.utc).isoformat(), "model_calls": 0}
+              "started_at": datetime.now(timezone.utc).isoformat(), "model_calls": 0,
+              "readiness_limit_seconds": args.readiness_seconds, "phase": "inspect"}
     started = False
     try:
         inspected = harness.command([*harness.DOCKER, "inspect", name], os.environ)
@@ -44,23 +49,27 @@ def main():
                     if value.startswith("NEO4J_AUTH=neo4j/"))
         env = dict(os.environ, BOM_NEO4J_PASSWORD=auth, BOM_NEO4J_PORT="18747",
                    BOM_NEO4J_LIVE="isolated-new-container", PYTHONIOENCODING="utf-8")
+        record["phase"] = "start"
         launch = harness.command([*harness.DOCKER, "start", name], env)
         if launch.returncode:
             raise RuntimeError("recovery_start_failed")
         started = True
         client = harness.graph.Client(auth)
+        record["phase"] = "readiness"
         ready_started = time.monotonic()
         while True:
             try:
                 client.verify_engine()
                 break
             except harness.graph.GraphError:
-                if time.monotonic() - ready_started > 420:
+                if time.monotonic() - ready_started > args.readiness_seconds:
                     raise RuntimeError("recovery_readiness_failed") from None
                 time.sleep(2)
         record["readiness_elapsed_seconds"] = round(time.monotonic() - ready_started, 3)
+        record["phase"] = "initialize"
         client.initialize()
         for pattern in ("test_projection_sync_live.py", "test_neo4j_live.py", "test_mcp_live.py"):
+            record["phase"] = pattern
             completed = harness.command([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", pattern, "-v"], env, 240)
             output = (completed.stdout + completed.stderr).replace(auth, "[REDACTED]")
             record[pattern] = {"exit_code": completed.returncode, "output": output}
@@ -68,12 +77,14 @@ def main():
             if completed.returncode:
                 raise RuntimeError("recovered_suite_failed")
         destination = directory / args.report_name.removesuffix(".json") / "system-demo"
+        record["phase"] = "system_demo"
         completed = harness.command([sys.executable, "system_demo.py", "--simulate-review", "--real-neo4j", "--isolated",
                                      "--out", str(destination)], env, 120)
         if completed.returncode:
             raise RuntimeError("recovered_demo_failed")
         record["system_demo"] = json.loads(completed.stdout)
         record["status"] = "passed"
+        record["phase"] = "complete"
     except (OSError, ValueError, RuntimeError, KeyError, StopIteration, subprocess.SubprocessError, harness.graph.GraphError) as error:
         record["error_type"] = type(error).__name__
     finally:

@@ -1,5 +1,6 @@
 {
   "date": "2026-10-04",
+  "runtime_revision": "2ce816b162e1a766411d2a470b3a1238b8d37281",
   "environment": "Windows; Python 3.13.14; local isolated synthetic data",
   "clean_index_export": {"discovered": 287, "passed": 263, "skipped": 24, "elapsed_seconds": 56.968},
   "real_boundary": {
