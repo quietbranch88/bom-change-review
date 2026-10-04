@@ -1,5 +1,5 @@
-# 架構設計
+# Architecture
 
-目前公開版本的系統架構、圖示、模組邊界與實作限制，請看 [系統架構](docs/architecture.md)。
+See [system architecture](docs/architecture.md) for diagrams, module boundaries, and implementation limits.
 
-展示覆核版本、同步恢復與多人任務管理，請看 [五分鐘 Demo](docs/demo.md)；執行證據與未完成項目在 [驗證紀錄](docs/verification.md)。
+See the [five-minute demo](docs/demo.md) for versioned review, sync recovery, and concurrent task management. Executed evidence and remaining gaps are in the [verification record](docs/verification.md).

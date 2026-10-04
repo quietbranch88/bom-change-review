@@ -1,5 +1,6 @@
 # BOM change review example
 
+- Public documentation, diagram labels, and new GitHub titles/descriptions must use English. Preserve original-language source excerpts and version-bound fixtures; translating documentation must not change authoritative inputs or their fingerprints.
 - Python 3.11+ standard library only for the core comparator/workflows. Zoe approved the official MCP SDK and its necessary dependencies for the optional MCP boundary on 2026-09-30; use the pinned `mcp` extra and lockfile. Run core tests with `python -m unittest discover -s tests -v`.
 - Run the lesson with `python lesson1.py --original LM5155 --candidate LM51551`.
 - Runtime reads `data/catalog.json`, never test answers or private resume material.

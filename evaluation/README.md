@@ -1,48 +1,48 @@
-# 先測「需求有沒有讀對」，再比較便宜模型
+# Evaluate requirement extraction before comparing cheap models
 
-目前是離線準備：10 個公開討論來源、60 個待擷取欄位、兩個候選模型各重複三次的 **60 次未執行計畫**。沒有呼叫 OpenRouter、讀取 API key 或產生模型評比結果。
+This is offline preparation: 10 public discussions, 60 extraction fields, and a planned 60 requests—two candidate models × three repetitions × 10 cases. The batch has not run. This preparation read no API key, called no OpenRouter endpoint, and produced no model comparison. Later single-case smoke tests are separate evidence.
 
-這不是替料決策系統。第一個問題是：模型能否分清楚「客戶要什麼、沒說什麼、哪些話只是別人的建議」？
+This is not replacement approval. First ask whether a model separates what the requester wants, what is unspecified, and what other participants merely suggest.
 
-## 資料怎麼走
+## Data flow
 
 ```text
-公開討論 → AI 改寫成短文與角色區塊 → inputs.json → prompt → 模型 JSON（尚未執行）
-                                  │                              │
-                                  └→ 參考草稿 → 人工覆核          └→ 格式檢查／參考比對
+Public discussion → AI paraphrases / role blocks → inputs.json → prompt → model JSON (batch not run)
+                               │                                             │
+                               └→ reference draft → human review             └→ validation / comparison
 ```
 
-- [inputs.json](inputs.json)：來源網址、查閱方式、段落位置、短文與欄位契約。模型輸入只取角色區塊、欄位定義與輸出結構。
-- [references.json](references.json)：AI 依來源整理的答案草稿，**尚未經人工覆核**，不能稱為工程師認證的標準答案。
-- [offline_eval.py](../offline_eval.py)：建立 prompt、檢查結構、列出試驗計畫、評分已存好的回答。沒有網路呼叫功能。
-- 驗證紀錄（本機稽核檔未公開）：本機測試、錯誤注入、掃描結果和未驗證邊界。
+- [inputs.json](inputs.json): provenance, retrieval method, locations, short paraphrases, and field contracts. Only role blocks, definitions, and output structure enter the prompt.
+- [references.json](references.json): AI-organized, not yet human-reviewed drafts—not engineer-certified gold answers.
+- [offline_eval.py](../offline_eval.py): builds prompts, checks structure, plans requests, and grades saved answers. It has no network runner.
+- Detailed verification records are local, not public artifacts.
 
-產生 prompt 的路徑不讀 references.json，測試會檢查這點。這不是檔案存取安全隔離：未來若給 agent 整個資料夾權限，仍可能讀到答案。正式試跑只應傳送序列化後的 prompt，不給模型檔案工具。
+Prompt generation does not read references; tests check that. This is not filesystem isolation: an Agent with directory access could still read answers. A future trial should send serialized prompts without file tools.
 
-## 十題各在測什麼
+## Ten development cases
 
-以下均是依真實公開提問製作的繁中改寫題，不是原始文件逐字輸入。跨元件領域只用來測擷取，不代表比較器已支援這些元件。
+These are Traditional Chinese paraphrases of real public questions, not verbatim documents. Cross-domain examples test extraction, not supported engineering comparators.
 
-| 題目／原始來源 | 要抓的錯誤 |
+| Case / source | Error to detect |
 |---|---|
-| [E01：LT8301ESS 替代需求](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1222180/lm5155-replace-lt8301ess) | 網站 LM5155 標籤不是客戶的原始料號；1.5 A 沒有自動等於連續電流 |
-| [E02：LM5155 缺料](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1093801/lm5155-possible-alternatives-to-replace-lm5155) | 提問者候選與支援人員建議分開；歷史缺料不是今天庫存 |
-| [E03：TXB0104 替代](https://e2e.ti.com/support/logic-group/logic/f/logic-forum/1464630/txb0104-q1-txb0104-replacement-material) | 訊號電平不是電源輸出；明確不改板要存 false |
-| [E04：LPDDR4 相容性](https://community.nxp.com/t5/i-MX-Processors/IMX-8M-plus-quad-lpddr-compatibility/m-p/1998106) | 原記憶體、候選和處理器角色不同；die 不能偷換成 rank |
-| [E05：MC68332 替代](https://community.nxp.com/t5/8-bit-Microcontrollers/MC68332-Replacement-amp-25MHz-gt-16MHz-Compatibility/m-p/2329442) | 希望免改韌體不等於可以免改；MHz 與 kHz 分開 |
-| [E06：SN74LVC1G125DBV 查詢](https://e2e.ti.com/support/logic-group/logic/f/logic-forum/1282284/sn74lvc1g125-sn74lvc1g125dbv) | 不偷偷用回覆中的完整料號修正提問原文 |
-| [E07：歷史生命週期](https://e2e.ti.com/support/amplifiers-group/amplifiers/f/amplifiers-forum/1276292/tlc3702-case-576614-technical-data-inquiry) | 舊資料表 Active 不是已確認的當前狀態 |
-| [E08：iMX6Dual 改 DualPlus](https://community.nxp.com/t5/i-MX-Processors/Is-it-simply-possible-to-replace-an-i-MX6Dual-by-an-i/td-p/962278) | 詢問相容性不等於已驗證；詢問改板風險不等於禁止改板 |
-| [E09：LM5164 pin-to-pin](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/988665/lm5164-q1-pin-to-pin-compatible) | 納入需求方補充的 500 mA 下限，不從電動車背景推定 AEC-Q100 |
-| [E10：AP7362-33SP-13 替代](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/994420/alternative-to-ap7362-33sp-13) | 不能用料號的 33 猜出客戶輸出電壓要求 |
+| [E01: LT8301ESS replacement](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1222180/lm5155-replace-lt8301ess) | LM5155 metadata is not the original part; 1.5 A is not automatically continuous |
+| [E02: LM5155 shortage](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1093801/lm5155-possible-alternatives-to-replace-lm5155) | Separate requester candidates from support suggestions; historical shortage is not current stock |
+| [E03: TXB0104 replacement](https://e2e.ti.com/support/logic-group/logic/f/logic-forum/1464630/txb0104-q1-txb0104-replacement-material) | Signal level is not power output; explicit no-PCB-change means false |
+| [E04: LPDDR4 compatibility](https://community.nxp.com/t5/i-MX-Processors/IMX-8M-plus-quad-lpddr-compatibility/m-p/1998106) | Distinguish original memory, candidate, and processor; do not replace die with rank |
+| [E05: MC68332 replacement](https://community.nxp.com/t5/8-bit-Microcontrollers/MC68332-Replacement-amp-25MHz-gt-16MHz-Compatibility/m-p/2329442) | Desired unchanged firmware is not verified compatibility; distinguish MHz and kHz |
+| [E06: SN74LVC1G125DBV inquiry](https://e2e.ti.com/support/logic-group/logic/f/logic-forum/1282284/sn74lvc1g125-sn74lvc1g125dbv) | Do not silently correct the question using a reply's full part number |
+| [E07: historical lifecycle](https://e2e.ti.com/support/amplifiers-group/amplifiers/f/amplifiers-forum/1276292/tlc3702-case-576614-technical-data-inquiry) | Old “Active” status is not verified current lifecycle |
+| [E08: iMX6Dual to DualPlus](https://community.nxp.com/t5/i-MX-Processors/Is-it-simply-possible-to-replace-an-i-MX6Dual-by-an-i/td-p/962278) | Compatibility questions are not proof; asking about PCB risk does not forbid changes |
+| [E09: LM5164 pin compatibility](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/988665/lm5164-q1-pin-to-pin-compatible) | Include the requester's later 500 mA minimum; EV context does not imply AEC-Q100 |
+| [E10: AP7362-33SP-13 replacement](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/994420/alternative-to-ap7362-33sp-13) | Do not infer requested output voltage from “33” in the name |
 
-查閱日期：2026-09-25。E02、E09 原頁讀取逾時，依官方網頁的搜尋索引內容整理；其餘八題讀取原頁。沒有保存整頁快照或圖面，E03 不解讀附圖。只保留必要改寫，未保存討論者姓名、email 或私人 BOM。
+Retrieved 2026-09-25. E02/E09 pages timed out and used official-page search-index content; the other eight pages were read directly. Full page snapshots/images were not retained; E03's attachment was not interpreted. Only necessary paraphrases remain, without participant names, email addresses, or private BOMs. Original fixture language is retained to preserve evaluation identity.
 
-## 一起看 E01
+## E01 example
 
-模型會看到：Q1 要替換 LT8301ESS；Q2 明列輸入 14–30 V、輸出 5 V／1.5 A／7.5 W、flyback、AEC-Q100。另有網站標籤 M1 和支援回覆 R1 作為干擾。
+Q1 names LT8301ESS. Q2 requests input 14–30 V, output 5 V / 1.5 A / 7.5 W, flyback, and AEC-Q100. M1 metadata and R1 support reply are distractors.
 
-其中兩個欄位的參考格式如下；這只是教學片段，實際回答必須包含該題全部欄位：
+Excerpt only—the actual response must contain every case field:
 
 ```json
 {
@@ -51,23 +51,23 @@
 }
 ```
 
-30 V 是明文資訊，程式能比對值、單位、證據 ID。電流是不是「連續值」沒說，因此保持 null；LLM 不能自行補完。人工覆核者要對照原始來源，確認改寫與參考草稿沒有丟失條件，不是只看 JSON 漂不漂亮。
+30 V is explicit; continuous-current meaning is not. Reviewers must check the source and paraphrase for lost conditions, not just JSON appearance.
 
-## 評分規則與限制
+## Grading contract and limitations
 
-1. **結構**：全部且僅有指定欄位、型別和單位正確；拒絕重複 JSON key、NaN、額外欄位、回覆或 metadata 證據。未知 scalar 為 null、未提及候選為 []，未知值不附假證據。
-2. **值**：與參考草稿精確比對；數字 14 與 14.0 相同，true 不等於 1。料號不去尾碼、不改大小寫；陣列順序不影響結果。
-3. **證據**：比較參考指定的最小證據集合，與值分開計分。合法 ID 不代表內容支持該值。
+1. Structure: all and only required fields; correct types/units; no duplicate JSON keys, NaN, extra fields, reply/metadata evidence, or fabricated evidence for unknowns. Unknown scalars use null; unspecified candidates use [].
+2. Values: exact reference comparison. 14 equals 14.0; true does not equal 1. Preserve part suffixes/case; array order does not matter.
+3. Evidence: exact minimal reference sets, scored separately from values. A legal ID does not prove semantic support.
 
-`all_fields_match=true` 只表示符合這份草稿 rubric，**不等於可安全替料，也不是 LLM 品質認證**。格式不合格的回答先回報格式錯誤，不對剩餘欄位算部分語意分數。
+`all_fields_match=true` means this draft rubric matches, not replacement safety or model certification. Invalid structure receives a format failure, not partial semantic grading.
 
-證據集合採精確匹配，有可能錯拒另一組合理證據。例如 E07 的生命週期查詢目前指定 Q2，而 Q1 的供應狀態詢問也可能被覆核者視為支持。實跑遇到此類差異要保留原回答、人工裁決、版本化修訂 rubric 並重評所有模型，不能只替某個模型放寬。當前分數應稱「參考匹配率」，不能直接稱正確率。
+Exact evidence matching may reject another reasonable set. E07 currently requires Q2, but a reviewer may accept Q1's supply question. Preserve such responses, adjudicate independently, version the rubric, and regrade every model. Do not selectively relax one model's score. Call the metric reference-match rate, not accuracy.
 
-這十題已參與 prompt／評分工具開發，是 development set。AI 同時參與改寫與參考答案，可能共同簡化或漏讀來源。測試用參考答案回填只證明評分有可通過路徑，沒有測到模型能力。正式比較還需人工覆核和未參與開發的新題；不能用這批短文宣稱原始 PDF、表格、英文長文、prompt injection 或真實工程判斷能力。
+These cases participated in prompt/grader development. AI helped create both paraphrases and references, so common omissions are possible. Feeding references back proves a solvable grading path, not model ability. Human review and independent held-out cases are required. This set does not establish PDF/table/long-English extraction, injection resistance, or real engineering judgment.
 
-## 本機操作
+## Local commands
 
-在專案目錄用 Python 3.11 以上執行；本次驗證版本為 3.13.14。
+Python 3.11+; the historical verification used 3.13.14:
 
 ```powershell
 python offline_eval.py check
@@ -77,11 +77,11 @@ python offline_eval.py grade --case E01 --response path/to/model-response.json
 python -m unittest discover -s tests -v
 ```
 
-若沒有直接可用的 python，把每行的 `python` 改為 `uv run --no-project --python 3.13 python`。上面的 response 路徑是占位符，需換成你儲存的完整模型回答檔；目前沒有模型回答檔，也沒有 API runner。工具輸出到終端，不覆寫答案或建立審核紀錄。
+Replace the response placeholder with your saved complete answer. If needed, substitute `uv run --no-project --python 3.13 python`. The tool prints reports; it does not overwrite references or create human-review records.
 
-- `check`：檢查十題參考結構，不能核實來源或模型準確度。
-- `prompt`：只列模型輸入，不執行模型。
-- `plan`：兩個候選 ID 為 `mistralai/ministral-3b-2512`、`google/gemini-3.1-flash-lite`，每題三次，總共 60 次。都是 not_run；成本、延遲、provider 為 null。同題 prompt hash 一致。這不代表 endpoint 或 schema 支援已驗證。
-- `grade`：完整匹配 exit 0；不匹配 exit 1；檔案／JSON／資料集錯誤 exit 2。CLI 已用實際子程序驗證，不只是函式 mock。
+- `check` checks reference structure, not truth.
+- `prompt` prints input, not inference.
+- `plan` lists `mistralai/ministral-3b-2512` and `google/gemini-3.1-flash-lite`, three repetitions per case, 60 requests, all `not_run`. Costs, latency, and providers are null. Matching prompt hashes do not prove endpoint/schema support.
+- `grade`: full match exits 0; mismatch 1; input/JSON/dataset error 2. Historical CLI checks used actual subprocesses.
 
-下一步先一起覆核 E01 的來源與參考，再確認試跑預算。未來 runner 必須記錄实际 provider、模型設定、token 用量、單次費用、重試與失敗；60 次只是初步重複觀察，不足以證明穩定可靠。即使模型擷取成功，工程可用性仍在另一個審核階段。
+A future runner needs explicit budget authorization and actual provider/configuration/token/cost/retry/failure records. Sixty planned requests alone would not establish stable quality. Extraction and engineering review remain separate.
